@@ -12,10 +12,10 @@
 #define QRTR_SECOND (TIMER_FREQ / 4)
 
 void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType) {
-    gfx_sprite_t *carRight[2] = {greenCarRight, brownCarRight}; //Different car colors for different directions
-    gfx_sprite_t *carLeft[2] = {greenCarLeft, brownCarLeft};
-    gfx_sprite_t *carUp[2] = {greenCarUp, brownCarUp};
-    gfx_sprite_t *carDown[2] = {greenCarDown, brownCarDown};
+    gfx_sprite_t *carRight[3] = {greenCarRight, brownCarRight, redCarRight}; //Different car colors for different directions
+    gfx_sprite_t *carLeft[3] = {greenCarLeft, brownCarLeft, redCarLeft};
+    gfx_sprite_t *carDown[3] = {greenCarDown, brownCarDown, redCarDown};
+    gfx_sprite_t *carUp[3] = {greenCarUp, brownCarUp, redCarUp};
     
     gfx_SetDrawBuffer();
 
@@ -31,10 +31,10 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
             gfx_ScaledTransparentSprite_NoClip(carLeft[carType], carX, carY, 3, 3);
             break;
         case 2:
-            gfx_ScaledSprite_NoClip(carDown[carType], carX, carY, 3, 3);
+            gfx_ScaledTransparentSprite_NoClip(carDown[carType], carX, carY, 3, 3);
             break;
         case 3:
-            gfx_ScaledSprite_NoClip(carUp[carType], carX, carY, 3, 3);
+            gfx_ScaledTransparentSprite_NoClip(carUp[carType], carX, carY, 3, 3);
             break;
         default:
             break;
@@ -61,15 +61,17 @@ int main(void) {
     // Weird car picking menu
 
     gfx_PrintStringXY("Weird car picking menu", 5, 5);
-    gfx_PrintStringXY("1 for green car, 2 for brown car", 5, 15);
+    gfx_PrintStringXY("1 for green car, 2 for brown car, 3 for red car", 5, 15);
     gfx_PrintStringXY("Then press enter.", 5, 25);
 
     while (!kb_IsDown(kb_KeyEnter)) {
         kb_Scan();
         if (kb_IsDown(kb_Key1)) {
-            carType = 0;
+            carType = 0;    //Green car
         } else if (kb_IsDown(kb_Key2)) {
-            carType = 1;
+            carType = 1;    //Brown car
+        } else if (kb_IsDown(kb_Key3)) {
+            carType = 2;    //Red car
         }
     }
 
