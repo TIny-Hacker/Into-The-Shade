@@ -11,7 +11,12 @@
 #define THIRD_SECOND (TIMER_FREQ / 3)
 #define QRTR_SECOND (TIMER_FREQ / 4)
 
-void draw(shadeX, shadeY, carX, carY, direction) {
+void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType) {
+    gfx_sprite_t *carRight[2] = {greenCarRight, brownCarRight}; //Different car colors for different directions
+    gfx_sprite_t *carLeft[2] = {greenCarLeft, brownCarLeft};
+    gfx_sprite_t *carUp[2] = {greenCarUp, brownCarUp};
+    gfx_sprite_t *carDown[2] = {greenCarDown, brownCarDown};
+    
     gfx_SetDrawBuffer();
 
     gfx_FillScreen(2);
@@ -20,16 +25,16 @@ void draw(shadeX, shadeY, carX, carY, direction) {
     
     switch (direction) {
         case 0:
-            gfx_ScaledTransparentSprite_NoClip(greenCarRight, carX, carY, 3, 3);
+            gfx_ScaledTransparentSprite_NoClip(carRight[carType], carX, carY, 3, 3);
             break;
         case 1:
-            gfx_ScaledTransparentSprite_NoClip(greenCarLeft, carX, carY, 3, 3);
+            gfx_ScaledTransparentSprite_NoClip(carLeft[carType], carX, carY, 3, 3);
             break;
         case 2:
-            gfx_ScaledSprite_NoClip(greenCarDown, carX, carY, 3, 3);
+            gfx_ScaledSprite_NoClip(carDown[carType], carX, carY, 3, 3);
             break;
         case 3:
-            gfx_ScaledSprite_NoClip(greenCarUp, carX, carY, 3, 3);
+            gfx_ScaledSprite_NoClip(carUp[carType], carX, carY, 3, 3);
             break;
         default:
             break;
@@ -51,6 +56,22 @@ int main(void) {
     int shadeX = 100;
     uint8_t shadePath = 0;
     uint8_t direction = 0;
+    uint8_t carType = 0;
+
+    // Weird car picking menu
+
+    gfx_PrintStringXY("Weird car picking menu", 5, 5);
+    gfx_PrintStringXY("1 for green car, 2 for brown car", 5, 15);
+    gfx_PrintStringXY("Then press enter.", 5, 25);
+
+    while (!kb_IsDown(kb_KeyEnter)) {
+        kb_Scan();
+        if (kb_IsDown(kb_Key1)) {
+            carType = 0;
+        } else if (kb_IsDown(kb_Key2)) {
+            carType = 1;
+        }
+    }
 
     rtc_Enable(RTC_SEC_INT);
     srand(rtc_Time());
@@ -59,7 +80,7 @@ int main(void) {
     timer_Set(1, THIRD_SECOND);
     timer_SetReload(1, THIRD_SECOND);
 
-    draw(100, 50, 4, 4, 0);
+    draw(100, 50, 4, 4, 0, carType);
 
     timer_Enable(1, TIMER_32K, TIMER_0INT, TIMER_DOWN);
 
@@ -124,7 +145,7 @@ int main(void) {
                 break;
         }
 
-        draw(shadeX, shadeY, carX, carY, direction);
+        draw(shadeX, shadeY, carX, carY, direction, carType);
     }
     timer_Disable(1);
 

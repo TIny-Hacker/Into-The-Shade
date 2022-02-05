@@ -15,6 +15,10 @@ converts:
       - greenCarLeft.png
       - greenCarDown.png
       - greenCarUp.png
+      - brownCarRight.png
+      - brownCarLeft.png
+      - brownCarDown.png
+      - brownCarUp.png
 
 outputs:
   - type: c
