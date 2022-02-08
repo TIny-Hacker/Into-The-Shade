@@ -12,10 +12,10 @@
 #define QRTR_SECOND (TIMER_FREQ / 4)
 
 void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType) {
-    gfx_sprite_t *carRight[3] = {greenCarRight, brownCarRight, redCarRight}; //Different car colors for different directions
-    gfx_sprite_t *carLeft[3] = {greenCarLeft, brownCarLeft, redCarLeft};
-    gfx_sprite_t *carDown[3] = {greenCarDown, brownCarDown, redCarDown};
-    gfx_sprite_t *carUp[3] = {greenCarUp, brownCarUp, redCarUp};
+    gfx_sprite_t *carRight[4] = {greenCarRight, brownCarRight, redCarRight, motorcycleRight}; //Different car colors for different directions
+    gfx_sprite_t *carLeft[4] = {greenCarLeft, brownCarLeft, redCarLeft, motorcycleLeft};
+    gfx_sprite_t *carDown[4] = {greenCarDown, brownCarDown, redCarDown, motorcycleDown};
+    gfx_sprite_t *carUp[4] = {greenCarUp, brownCarUp, redCarUp, motorcycleUp};
     
     gfx_SetDrawBuffer();
 
@@ -78,7 +78,7 @@ int main(void) {
 
     gfx_PrintStringXY("Weird car picking menu", 5, 5);
     gfx_PrintStringXY("1 for green car, 2 for brown car, 3 for red car", 5, 15);
-    gfx_PrintStringXY("5 for truck", 5, 25);
+    gfx_PrintStringXY("4 for truck, 5 for motorcycle", 5, 25);
     gfx_PrintStringXY("Then press enter.", 5, 35);
 
     while (!kb_IsDown(kb_KeyEnter)) {
@@ -89,8 +89,10 @@ int main(void) {
             carType = 1;    // Brown car
         } else if (kb_IsDown(kb_Key3)) {
             carType = 2;    // Red car
-        } else if (kb_IsDown(kb_Key5)) {
+        } else if (kb_IsDown(kb_Key4)) {
             carType = 4;    // Truck
+        } else if (kb_IsDown(kb_Key5)) {
+            carType = 3;    // Motorcycle (these are backwards because of weird things with arrays)
         }
     }
 

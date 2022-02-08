@@ -27,6 +27,10 @@ converts:
       - truckLeft.png
       - truckDown.png
       - truckUp.png
+      - motorcycleRight.png
+      - motorcycleLeft.png
+      - motorcycleDown.png
+      - motorcycleUp.png
 
 outputs:
   - type: c
