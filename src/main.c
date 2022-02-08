@@ -25,16 +25,32 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
     
     switch (direction) {
         case 0:
-            gfx_ScaledTransparentSprite_NoClip(carRight[carType], carX, carY, 3, 3);
+            if (carType != 4) { // If it's not the truck
+                gfx_ScaledTransparentSprite_NoClip(carRight[carType], carX, carY, 3, 3);
+            } else {
+                gfx_ScaledTransparentSprite_NoClip(truckRight, carX, carY, 3, 3);
+            }
             break;
         case 1:
-            gfx_ScaledTransparentSprite_NoClip(carLeft[carType], carX, carY, 3, 3);
+            if (carType != 4) {
+                gfx_ScaledTransparentSprite_NoClip(carLeft[carType], carX, carY, 3, 3);
+            } else {
+                gfx_ScaledTransparentSprite_NoClip(truckLeft, carX, carY, 3, 3);
+            }
             break;
         case 2:
-            gfx_ScaledTransparentSprite_NoClip(carDown[carType], carX, carY, 3, 3);
+            if (carType != 4) {
+                gfx_ScaledTransparentSprite_NoClip(carDown[carType], carX, carY, 3, 3);
+            } else {
+                gfx_ScaledTransparentSprite_NoClip(truckDown, carX, carY, 3, 3);
+            }
             break;
         case 3:
-            gfx_ScaledTransparentSprite_NoClip(carUp[carType], carX, carY, 3, 3);
+            if (carType != 4) {
+                gfx_ScaledTransparentSprite_NoClip(carUp[carType], carX, carY, 3, 3);
+            } else {
+                gfx_ScaledTransparentSprite_NoClip(truckUp, carX, carY, 3, 3);
+            }
             break;
         default:
             break;
@@ -62,16 +78,19 @@ int main(void) {
 
     gfx_PrintStringXY("Weird car picking menu", 5, 5);
     gfx_PrintStringXY("1 for green car, 2 for brown car, 3 for red car", 5, 15);
-    gfx_PrintStringXY("Then press enter.", 5, 25);
+    gfx_PrintStringXY("5 for truck", 5, 25);
+    gfx_PrintStringXY("Then press enter.", 5, 35);
 
     while (!kb_IsDown(kb_KeyEnter)) {
         kb_Scan();
         if (kb_IsDown(kb_Key1)) {
-            carType = 0;    //Green car
+            carType = 0;    // Green car
         } else if (kb_IsDown(kb_Key2)) {
-            carType = 1;    //Brown car
+            carType = 1;    // Brown car
         } else if (kb_IsDown(kb_Key3)) {
-            carType = 2;    //Red car
+            carType = 2;    // Red car
+        } else if (kb_IsDown(kb_Key5)) {
+            carType = 4;    // Truck
         }
     }
 

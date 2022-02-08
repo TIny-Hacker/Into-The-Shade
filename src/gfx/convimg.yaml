@@ -23,6 +23,10 @@ converts:
       - redCarLeft.png
       - redCarDown.png
       - redCarUp.png
+      - truckRight.png
+      - truckLeft.png
+      - truckDown.png
+      - truckUp.png
 
 outputs:
   - type: c
