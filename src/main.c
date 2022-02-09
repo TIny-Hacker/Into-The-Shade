@@ -1,4 +1,5 @@
 #include "gfx/gfx.h"
+#include "ui.h"
 
 #include <tice.h>
 #include <graphx.h>
@@ -19,8 +20,9 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
     
     gfx_SetDrawBuffer();
 
-    gfx_FillScreen(2);
+    gfx_FillScreen(17);
 
+    gfx_SetColor(74);
     gfx_FillRectangle_NoClip(shadeX, shadeY, 80, 60);
     
     switch (direction) {
@@ -56,6 +58,8 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
             break;
     }
 
+    ui_verticalIndicator(50, 25, 47, 13);   // Placeholder for the various UI indicators
+
     gfx_BlitBuffer();
     gfx_SetDrawScreen();
 }
@@ -64,7 +68,6 @@ int main(void) {
     gfx_Begin();
     gfx_SetPalette(global_palette, sizeof_global_palette, 0);
     gfx_SetTransparentColor(1);
-    gfx_SetColor(74);
 
     uint8_t carY = 4;
     int carX = 4;
