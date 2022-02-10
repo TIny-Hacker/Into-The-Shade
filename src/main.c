@@ -17,10 +17,12 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
     gfx_sprite_t *carLeft[4] = {greenCarLeft, brownCarLeft, redCarLeft, motorcycleLeft};
     gfx_sprite_t *carDown[4] = {greenCarDown, brownCarDown, redCarDown, motorcycleDown};
     gfx_sprite_t *carUp[4] = {greenCarUp, brownCarUp, redCarUp, motorcycleUp};
-    
+
+    gfx_BlitScreen();    
     gfx_SetDrawBuffer();
 
-    gfx_FillScreen(17);
+    gfx_SetColor(3);
+    gfx_FillRectangle_NoClip(23, 23, 204, 194);
 
     gfx_SetColor(74);
     gfx_FillRectangle_NoClip(shadeX, shadeY, 80, 60);
@@ -58,7 +60,9 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
             break;
     }
 
-    ui_verticalIndicator(50, 25, 47, 13);   // Placeholder for the various UI indicators
+    ui_VerticalIndicator(251, 20, 47, 13);   // Placeholders for the various UI indicators
+
+    ui_VerticalIndicator(279, 20, 160, 36);
 
     gfx_BlitBuffer();
     gfx_SetDrawScreen();
@@ -69,8 +73,8 @@ int main(void) {
     gfx_SetPalette(global_palette, sizeof_global_palette, 0);
     gfx_SetTransparentColor(1);
 
-    uint8_t carY = 4;
-    int carX = 4;
+    uint8_t carY = 25;
+    int carX = 25;
     uint8_t shadeY = 50;
     int shadeX = 100;
     uint8_t shadePath = 0;
@@ -106,7 +110,9 @@ int main(void) {
     timer_Set(1, THIRD_SECOND);
     timer_SetReload(1, THIRD_SECOND);
 
-    draw(100, 50, 4, 4, 0, carType);
+    ui_BackgroundFrame();
+
+    draw(100, 50, carX, carY, 0, carType);
 
     timer_Enable(1, TIMER_32K, TIMER_0INT, TIMER_DOWN);
 
@@ -115,25 +121,25 @@ int main(void) {
 
         switch (kb_Data[7]) {
             case kb_Up:
-                if (carY > 4) {
+                if (carY > 25) {
                     carY -= 4;
                 }
                 direction = 3;
                 break;
             case kb_Down:
-                if (carY < 184) {
+                if (carY < 142) {
                     carY += 4;
                 }
                 direction = 2;
                 break;
             case kb_Left:
-                if (carX > 4) {
+                if (carX > 25) {
                     carX -= 4;
                 }
                 direction = 1;
                 break;
             case kb_Right:
-                if (carX < 270) {
+                if (carX < 174) {
                     carX += 4;
                 }
                 direction = 0;
@@ -149,22 +155,22 @@ int main(void) {
 
         switch (shadePath) {
             case 0:
-                if (shadeY > 4) {
-                    shadeY -= 2;
+                if (shadeY > 26) {
+                    shadeY -= 4;
                 }
                 break;
             case 1:
-                if (shadeY < 184) {
+                if (shadeY < 154) {
                     shadeY += 4;
                 }
                 break;
             case 2:
-                if (shadeX > 4) {
+                if (shadeX > 25) {
                     shadeX -= 4;
                 }
                 break;
             case 3:
-                if (shadeX < 270) {
+                if (shadeX < 146) {
                     shadeX += 4;
                 }
             default:
