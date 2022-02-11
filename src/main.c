@@ -179,7 +179,7 @@ int main(void) {
                 }
                 break;
             case 3:
-                if (shadeX < 146) {
+                if (shadeX < 144) {
                     shadeX += 4;
                 }
             default:
