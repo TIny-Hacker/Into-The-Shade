@@ -4,7 +4,7 @@
 
 NAME = SHADE
 ICON = icon.png
-DESCRIPTION = "Move the Car into the Shade"
+DESCRIPTION = "Move the car into the shade!"
 COMPRESSED = YES
 ARCHIVED = YES
 
