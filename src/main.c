@@ -13,10 +13,10 @@
 #define QRTR_SECOND (TIMER_FREQ / 4)
 
 void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType, uint8_t heat, int time) {
-    gfx_sprite_t *carRight[4] = {greenCarRight, brownCarRight, redCarRight, motorcycleRight}; //Different car colors for different directions
-    gfx_sprite_t *carLeft[4] = {greenCarLeft, brownCarLeft, redCarLeft, motorcycleLeft};
-    gfx_sprite_t *carDown[4] = {greenCarDown, brownCarDown, redCarDown, motorcycleDown};
-    gfx_sprite_t *carUp[4] = {greenCarUp, brownCarUp, redCarUp, motorcycleUp};
+    gfx_sprite_t *carRight[5] = {greenCarRight, brownCarRight, redCarRight, truckRight, motorcycleRight}; //Different car colors for different directions
+    gfx_sprite_t *carLeft[5] = {greenCarLeft, brownCarLeft, redCarLeft, truckLeft, motorcycleLeft};
+    gfx_sprite_t *carDown[5] = {greenCarDown, brownCarDown, redCarDown, truckDown, motorcycleDown};
+    gfx_sprite_t *carUp[5] = {greenCarUp, brownCarUp, redCarUp, truckUp, motorcycleUp};
 
     gfx_BlitScreen();    
     gfx_SetDrawBuffer();
@@ -29,32 +29,16 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
     
     switch (direction) {
         case 0:
-            if (carType != 4) { // If it's not the truck
                 gfx_ScaledTransparentSprite_NoClip(carRight[carType], carX, carY, 3, 3);
-            } else {
-                gfx_ScaledTransparentSprite_NoClip(truckRight, carX, carY, 3, 3);
-            }
             break;
         case 1:
-            if (carType != 4) {
                 gfx_ScaledTransparentSprite_NoClip(carLeft[carType], carX, carY, 3, 3);
-            } else {
-                gfx_ScaledTransparentSprite_NoClip(truckLeft, carX, carY, 3, 3);
-            }
             break;
         case 2:
-            if (carType != 4) {
                 gfx_ScaledTransparentSprite_NoClip(carDown[carType], carX, carY, 3, 3);
-            } else {
-                gfx_ScaledTransparentSprite_NoClip(truckDown, carX, carY, 3, 3);
-            }
             break;
         case 3:
-            if (carType != 4) {
                 gfx_ScaledTransparentSprite_NoClip(carUp[carType], carX, carY, 3, 3);
-            } else {
-                gfx_ScaledTransparentSprite_NoClip(truckUp, carX, carY, 3, 3);
-            }
             break;
         default:
             break;
@@ -100,9 +84,9 @@ int main(void) {
         } else if (kb_IsDown(kb_Key3)) {
             carType = 2;    // Red car
         } else if (kb_IsDown(kb_Key4)) {
-            carType = 4;    // Truck
+            carType = 3;    // Truck
         } else if (kb_IsDown(kb_Key5)) {
-            carType = 3;    // Motorcycle (these are backwards because of weird things with arrays)
+            carType = 4;    // Motorcycle
         }
     }
 
@@ -130,7 +114,7 @@ int main(void) {
                 direction = 3;
                 break;
             case kb_Down:
-                if (carY < 142) {
+                if (carY < 160) {
                     carY += 4;
                 }
                 direction = 2;
@@ -142,7 +126,7 @@ int main(void) {
                 direction = 1;
                 break;
             case kb_Right:
-                if (carX < 174) {
+                if (carX < 182) {
                     carX += 4;
                 }
                 direction = 0;
