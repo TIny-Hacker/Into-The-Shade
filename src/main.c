@@ -22,7 +22,7 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
     gfx_SetDrawBuffer();
 
     gfx_SetColor(3);
-    gfx_FillRectangle_NoClip(23, 23, 204, 194); // Background
+    gfx_FillRectangle_NoClip(23, 21, 204, 194); // Background
 
     gfx_SetColor(74);
     gfx_FillRectangle_NoClip(shadeX, shadeY, 80, 60);   // Shade
@@ -44,9 +44,8 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
             break;
     }
 
-    ui_VerticalIndicator(251, 20, 47, time);   // Time and heat indicators
-
-    ui_VerticalIndicator(279, 20, 160, heat);
+    ui_VerticalIndicator(251, 18, 47, time);   // Time and heat indicators
+    ui_VerticalIndicator(279, 18, 160, heat);
 
     gfx_BlitBuffer();
     gfx_SetDrawScreen();
@@ -57,7 +56,7 @@ int main(void) {
     gfx_SetPalette(global_palette, sizeof_global_palette, 0);
     gfx_SetTransparentColor(1);
 
-    uint8_t carY = 25;
+    uint8_t carY = 23;
     int carX = 25;
     uint8_t shadeY = 50;
     int shadeX = 100;
@@ -108,13 +107,13 @@ int main(void) {
 
         switch (kb_Data[7]) {
             case kb_Up:
-                if (carY > 25) {
+                if (carY > 23) {
                     carY -= 4;
                 }
                 direction = 3;
                 break;
             case kb_Down:
-                if (carY < 160) {
+                if (carY < 158) {
                     carY += 4;
                 }
                 direction = 2;
@@ -148,12 +147,12 @@ int main(void) {
 
         switch (shadePath) {
             case 0:
-                if (shadeY > 26) {
+                if (shadeY > 24) {
                     shadeY -= 4;
                 }
                 break;
             case 1:
-                if (shadeY < 154) {
+                if (shadeY < 152) {
                     shadeY += 4;
                 }
                 break;

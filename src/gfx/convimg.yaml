@@ -32,6 +32,8 @@ converts:
       - motorcycleLeft.png
       - motorcycleDown.png
       - motorcycleUp.png
+      - flame.png
+      - stopwatch.png
 
 outputs:
   - type: c
