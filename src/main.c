@@ -12,7 +12,7 @@
 #define THIRD_SECOND (TIMER_FREQ / 3)
 #define QRTR_SECOND (TIMER_FREQ / 4)
 
-void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType) {
+void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType, uint8_t heat, int time) {
     gfx_sprite_t *carRight[4] = {greenCarRight, brownCarRight, redCarRight, motorcycleRight}; //Different car colors for different directions
     gfx_sprite_t *carLeft[4] = {greenCarLeft, brownCarLeft, redCarLeft, motorcycleLeft};
     gfx_sprite_t *carDown[4] = {greenCarDown, brownCarDown, redCarDown, motorcycleDown};
@@ -22,10 +22,10 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
     gfx_SetDrawBuffer();
 
     gfx_SetColor(3);
-    gfx_FillRectangle_NoClip(23, 23, 204, 194);
+    gfx_FillRectangle_NoClip(23, 23, 204, 194); // Background
 
     gfx_SetColor(74);
-    gfx_FillRectangle_NoClip(shadeX, shadeY, 80, 60);
+    gfx_FillRectangle_NoClip(shadeX, shadeY, 80, 60);   // Shade
     
     switch (direction) {
         case 0:
@@ -60,9 +60,9 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
             break;
     }
 
-    ui_VerticalIndicator(251, 20, 47, 13);   // Placeholders for the various UI indicators
+    ui_VerticalIndicator(251, 20, 47, time);   // Time and heat indicators
 
-    ui_VerticalIndicator(279, 20, 160, 36);
+    ui_VerticalIndicator(279, 20, 160, heat);
 
     gfx_BlitBuffer();
     gfx_SetDrawScreen();
@@ -80,6 +80,9 @@ int main(void) {
     uint8_t shadePath = 0;
     uint8_t direction = 0;
     uint8_t carType = 0;
+    uint8_t heat = 24;
+    int time = 0;
+    int finish = 150;   // Score necessary to complete a level (for now)
 
     // Weird car picking menu
 
@@ -112,7 +115,7 @@ int main(void) {
 
     ui_BackgroundFrame();
 
-    draw(100, 50, carX, carY, 0, carType);
+    draw(100, 50, carX, carY, 0, carType, heat, 0);
 
     timer_Enable(1, TIMER_32K, TIMER_0INT, TIMER_DOWN);
 
@@ -150,6 +153,12 @@ int main(void) {
 
         if (timer_ChkInterrupt(1, TIMER_RELOADED)) {
             shadePath = randInt(0, 4);
+            if (carX >= shadeX - 10 && carY >= shadeY - 10 && carX <= shadeX + 70 && carY <= shadeY + 50) {   // If the car is in the shade
+                heat -= (heat > 0);
+            } else {
+                heat += (heat < 99) * 2;
+            }
+            time++;
             timer_AckInterrupt(1, TIMER_RELOADED);
         }
 
@@ -177,7 +186,17 @@ int main(void) {
                 break;
         }
 
-        draw(shadeX, shadeY, carX, carY, direction, carType);
+        draw(shadeX, shadeY, carX, carY, direction, carType, heat, (time * 100 / finish));
+
+        if (heat >= 100) {
+            boot_WaitShort();
+            ui_GameOver();
+        }
+
+        if (time >= finish) {
+            boot_WaitShort();
+            ui_StageComplete();
+        }
     }
     timer_Disable(1);
 

@@ -1,6 +1,7 @@
 #include "ui.h"
 
 #include <graphx.h>
+#include <keypadc.h>
 
 void ui_VerticalIndicator(int x, uint8_t y, uint8_t color, int fill) {
     gfx_SetColor(2);
@@ -21,4 +22,34 @@ void ui_BackgroundFrame(void) {
     gfx_FillRectangle_NoClip(21, 21, 208, 198);
     gfx_SetColor(3);
     gfx_FillRectangle_NoClip(23, 23, 204, 194);
+}
+
+void ui_GameOver(void) {
+    gfx_SetDrawBuffer();
+
+    gfx_FillScreen(17);
+
+    gfx_SetTextFGColor(0);
+    gfx_PrintStringXY("Game Over!", 150, 100);  // I know it's off center but who cares
+
+    gfx_BlitBuffer();
+
+    while (!kb_IsDown(kb_KeyClear)) {
+        kb_Scan();
+    }
+}
+
+void ui_StageComplete(void) {
+    gfx_SetDrawBuffer();
+
+    gfx_FillScreen(17);
+
+    gfx_SetTextFGColor(0);
+    gfx_PrintStringXY("Complete!", 150, 100);
+
+    gfx_BlitBuffer();
+
+    while (!kb_IsDown(kb_KeyClear)) {
+        kb_Scan();
+    }
 }
