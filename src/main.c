@@ -12,12 +12,7 @@
 #define THIRD_SECOND (TIMER_FREQ / 3)
 #define QRTR_SECOND (TIMER_FREQ / 4)
 
-void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType, uint8_t heat, int time) {
-    gfx_sprite_t *carRight[5] = {greenCarRight, brownCarRight, redCarRight, truckRight, motorcycleRight}; //Different car colors for different directions
-    gfx_sprite_t *carLeft[5] = {greenCarLeft, brownCarLeft, redCarLeft, truckLeft, motorcycleLeft};
-    gfx_sprite_t *carDown[5] = {greenCarDown, brownCarDown, redCarDown, truckDown, motorcycleDown};
-    gfx_sprite_t *carUp[5] = {greenCarUp, brownCarUp, redCarUp, truckUp, motorcycleUp};
-
+void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType, uint8_t heat, int time, gfx_sprite_t **carRight, gfx_sprite_t **carLeft, gfx_sprite_t **carUp, gfx_sprite_t **carDown) {
     gfx_BlitScreen();    
     gfx_SetDrawBuffer();
 
@@ -67,25 +62,70 @@ int main(void) {
     int time = 0;
     int finish = 150;   // Score necessary to complete a level (for now)
 
-    // Weird car picking menu
+    gfx_sprite_t *carRight[5] = {greenCarRight, brownCarRight, redCarRight, truckRight, motorcycleRight}; //Different car colors for different directions
+    gfx_sprite_t *carLeft[5] = {greenCarLeft, brownCarLeft, redCarLeft, truckLeft, motorcycleLeft};
+    gfx_sprite_t *carDown[5] = {greenCarDown, brownCarDown, redCarDown, truckDown, motorcycleDown};
+    gfx_sprite_t *carUp[5] = {greenCarUp, brownCarUp, redCarUp, truckUp, motorcycleUp};
 
-    gfx_PrintStringXY("Weird car picking menu", 5, 5);
-    gfx_PrintStringXY("1 for green car, 2 for brown car, 3 for red car", 5, 15);
-    gfx_PrintStringXY("4 for truck, 5 for motorcycle", 5, 25);
-    gfx_PrintStringXY("Then press enter.", 5, 35);
+    // Main menu
 
-    while (!kb_IsDown(kb_KeyEnter)) {
+    gfx_SetDrawBuffer();
+    ui_MainMenu();
+    ui_CarPicked(210, 76, carType, &carRight[0]);   // Whenever I pass an array of sprites, the compiler has a hiccup unless I put a [0] after it. Not sure why but it works!
+    gfx_BlitBuffer();
+
+    uint16_t cursorX = 107;
+    uint8_t cursorY = 75;
+
+    gfx_SetDrawScreen();
+    ui_Cursor(0, cursorX, cursorY);
+    
+    while (kb_AnyKey());
+
+    bool keyPressed = false;
+    timer_Enable(1, TIMER_32K, TIMER_NOINT, TIMER_UP);
+
+    while (!(kb_IsDown(kb_KeyEnter) && cursorY == 75)) {
         kb_Scan();
-        if (kb_IsDown(kb_Key1)) {
-            carType = 0;    // Green car
-        } else if (kb_IsDown(kb_Key2)) {
-            carType = 1;    // Brown car
-        } else if (kb_IsDown(kb_Key3)) {
-            carType = 2;    // Red car
-        } else if (kb_IsDown(kb_Key4)) {
-            carType = 3;    // Truck
-        } else if (kb_IsDown(kb_Key5)) {
-            carType = 4;    // Motorcycle
+        if (!kb_AnyKey()) {
+            keyPressed = false;
+            timer_Set(1, 0);
+        }
+        if (kb_IsDown(kb_KeyEnter) && cursorY != 75) {
+            if (cursorX == 20) {
+                carType = 0;
+            } else if (cursorX == 77) {
+                carType = 1;
+            } else if (cursorX == 134) {
+                carType = 4;
+            } else if (cursorX == 191) {
+                carType = 2;
+            } else if (cursorX == 248) {
+                carType = 3;
+            }
+            ui_CarPicked(210, 76, carType, &carRight[0]);
+        }
+        if (kb_Data[7] && (!keyPressed || timer_Get(1) > 3000)) {
+            ui_Cursor(17, cursorX, cursorY);
+            if (kb_IsDown(kb_KeyDown)) {
+                cursorY = 139;
+                cursorX = 20;
+            } else if (kb_IsDown(kb_KeyUp)) {
+                cursorY = 75;
+                cursorX = 107;
+            } else if (kb_IsDown(kb_KeyRight) && cursorX < 193 && cursorY != 75) {
+                cursorX += 57;
+            } else if (kb_IsDown(kb_KeyLeft) && cursorX > 20 && cursorY != 75) {
+                cursorX -= 57;
+            }
+            ui_Cursor(0, cursorX, cursorY);
+            if (!keyPressed) {
+                while (timer_Get(1) < 9000 && kb_Data[7]) {
+                    kb_Scan();
+                }
+            }
+            keyPressed = true;
+            timer_Set(1,0);
         }
     }
 
@@ -96,9 +136,11 @@ int main(void) {
     timer_Set(1, THIRD_SECOND);
     timer_SetReload(1, THIRD_SECOND);
 
+    gfx_SetDrawBuffer();
     ui_BackgroundFrame();
+    gfx_BlitBuffer();
 
-    draw(100, 50, carX, carY, 0, carType, heat, 0);
+    draw(100, 50, carX, carY, 0, carType, heat, 0, &carRight[0], &carLeft[0], &carUp[0], &carDown[0]);
 
     timer_Enable(1, TIMER_32K, TIMER_0INT, TIMER_DOWN);
 
@@ -169,7 +211,7 @@ int main(void) {
                 break;
         }
 
-        draw(shadeX, shadeY, carX, carY, direction, carType, heat, (time * 100 / finish));
+        draw(shadeX, shadeY, carX, carY, direction, carType, heat, (time * 100 / finish), &carRight[0], &carLeft[0], &carUp[0], &carDown[0]);
 
         if (heat >= 100) {
             boot_WaitShort();
