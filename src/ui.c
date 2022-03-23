@@ -69,7 +69,7 @@ void ui_VerticalIndicator(int x, uint8_t y, uint8_t color, int fill) {
     gfx_FillRectangle_NoClip(x + 3, y + 3, 14, fill);
 }
 
-void ui_BackgroundFrame(void) {
+void ui_BackgroundFrame(uint8_t day) {
     gfx_FillScreen(17);
     gfx_SetColor(2);
     gfx_FillRectangle_NoClip(20, 18, 210, 200);
@@ -80,7 +80,9 @@ void ui_BackgroundFrame(void) {
     gfx_ScaledTransparentSprite_NoClip(flame, 281, 219, 2, 2);
     gfx_ScaledTransparentSprite_NoClip(stopwatch, 253, 219, 2, 2);
     gfx_SetTextScale(2, 2);
-    gfx_PrintStringXY("Test Stage", 58, 222);   // Filler for level name
+    gfx_PrintStringXY("Day", 82, 222);
+    gfx_SetTextXY(142, 222);
+    gfx_PrintInt(day + 1, 1);
 
 }
 
@@ -99,17 +101,25 @@ void ui_GameOver(void) {
     }
 }
 
-void ui_StageComplete(void) {
+void ui_StageComplete(uint8_t day, uint8_t carType, gfx_sprite_t **carRight) {
+    int16_t carAnimation = 0;
     gfx_SetDrawBuffer();
-
     gfx_FillScreen(17);
 
     gfx_SetTextFGColor(0);
-    gfx_PrintStringXY("Complete!", 150, 100);
+    gfx_SetTextScale(3, 3);
+    gfx_PrintStringXY("Day", 108, 75);
+    gfx_SetTextXY(189, 75);
+    gfx_PrintInt(day + 1, 1);
+    gfx_PrintStringXY("Complete!", 58, 100);
 
     gfx_BlitBuffer();
-
-    while (!kb_IsDown(kb_KeyClear)) {
+    while (!kb_IsDown(kb_KeyEnter) && carAnimation < 288) {
         kb_Scan();
+        gfx_SetColor(17);
+        gfx_FillRectangle_NoClip(carAnimation - 2, 205, 32, 32);
+        gfx_ScaledTransparentSprite_NoClip(carRight[carType], carAnimation, 205, 2, 2);
+        gfx_BlitBuffer();
+        carAnimation += 2;
     }
 }

@@ -51,16 +51,7 @@ int main(void) {
     gfx_SetPalette(global_palette, sizeof_global_palette, 0);
     gfx_SetTransparentColor(1);
 
-    uint8_t carY = 23;
-    int carX = 25;
-    uint8_t shadeY = 50;
-    int shadeX = 100;
-    uint8_t shadePath = 0;
-    uint8_t direction = 0;
     uint8_t carType = 0;
-    uint8_t heat = 24;
-    int time = 0;
-    int finish = 150;   // Score necessary to complete a level (for now)
 
     gfx_sprite_t *carRight[5] = {greenCarRight, brownCarRight, redCarRight, truckRight, motorcycleRight}; //Different car colors for different directions
     gfx_sprite_t *carLeft[5] = {greenCarLeft, brownCarLeft, redCarLeft, truckLeft, motorcycleLeft};
@@ -129,98 +120,118 @@ int main(void) {
         }
     }
 
+
+    // Actual game stuff
     rtc_Enable(RTC_SEC_INT);
     srand(rtc_Time());
-
     timer_Disable(1);
     timer_Set(1, THIRD_SECOND);
     timer_SetReload(1, THIRD_SECOND);
 
-    gfx_SetDrawBuffer();
-    ui_BackgroundFrame();
-    gfx_BlitBuffer();
+    for (uint8_t day = 0; day <= 255; day++) {
+        uint8_t carY = 23;
+        int carX = 25;
+        uint8_t shadeY = 50;
+        int shadeX = 100;
+        uint8_t shadePath = 0;
+        uint8_t direction = 0;
+        uint8_t heat = 0;
+        int time = 0;
+        int finish = 150;
 
-    draw(100, 50, carX, carY, 0, carType, heat, 0, &carRight[0], &carLeft[0], &carUp[0], &carDown[0]);
+        gfx_SetDrawBuffer();
+        ui_BackgroundFrame(day);
+        gfx_BlitBuffer();
 
-    timer_Enable(1, TIMER_32K, TIMER_0INT, TIMER_DOWN);
+        draw(100, 50, carX, carY, 0, carType, heat, 0, &carRight[0], &carLeft[0], &carUp[0], &carDown[0]);
 
-    while (!kb_IsDown(kb_KeyClear)) {
-        kb_Scan();
+        while (kb_AnyKey());
+        timer_Enable(1, TIMER_32K, TIMER_0INT, TIMER_DOWN);
 
-        switch (kb_Data[7]) {
-            case kb_Up:
-                if (carY > 23) {
-                    carY -= 4;
-                }
-                direction = 3;
-                break;
-            case kb_Down:
-                if (carY < 158) {
-                    carY += 4;
-                }
-                direction = 2;
-                break;
-            case kb_Left:
-                if (carX > 25) {
-                    carX -= 4;
-                }
-                direction = 1;
-                break;
-            case kb_Right:
-                if (carX < 182) {
-                    carX += 4;
-                }
-                direction = 0;
-                break;
-            default:
-                break;
-        }
+        while (!kb_IsDown(kb_KeyClear)) {
+            kb_Scan();
 
-        if (timer_ChkInterrupt(1, TIMER_RELOADED)) {
-            shadePath = randInt(0, 4);
-            if (carX >= shadeX - 10 && carY >= shadeY - 10 && carX <= shadeX + 70 && carY <= shadeY + 50) {   // If the car is in the shade
-                heat -= (heat > 0);
-            } else {
-                heat += (heat < 99) * 2;
+            switch (kb_Data[7]) {
+                case kb_Up:
+                    if (carY > 23) {
+                        carY -= 4;
+                    }
+                    direction = 3;
+                    break;
+                case kb_Down:
+                    if (carY < 158) {
+                        carY += 4;
+                    }
+                    direction = 2;
+                    break;
+                case kb_Left:
+                    if (carX > 25) {
+                        carX -= 4;
+                    }
+                    direction = 1;
+                    break;
+                case kb_Right:
+                    if (carX < 182) {
+                        carX += 4;
+                    }
+                    direction = 0;
+                    break;
+                default:
+                    break;
             }
-            time++;
-            timer_AckInterrupt(1, TIMER_RELOADED);
+
+            if (timer_ChkInterrupt(1, TIMER_RELOADED)) {
+                shadePath = randInt(0, 4);
+                if (carX >= shadeX - 10 && carY >= shadeY - 10 && carX <= shadeX + 70 && carY <= shadeY + 50) {   // If the car is in the shade
+                    heat -= (heat > 0);
+                } else {
+                    heat += (heat < 99) * 2;
+                }
+                time++;
+                timer_AckInterrupt(1, TIMER_RELOADED);
+            }
+
+            switch (shadePath) {
+                case 0:
+                    if (shadeY > 24) {
+                        shadeY -= 4;
+                    }
+                    break;
+                case 1:
+                    if (shadeY < 152) {
+                        shadeY += 4;
+                    }
+                    break;
+                case 2:
+                    if (shadeX > 25) {
+                        shadeX -= 4;
+                    }
+                    break;
+                case 3:
+                    if (shadeX < 144) {
+                        shadeX += 4;
+                    }
+                default:
+                    break;
+            }
+
+            draw(shadeX, shadeY, carX, carY, direction, carType, heat, (time * 100 / finish), &carRight[0], &carLeft[0], &carUp[0], &carDown[0]);
+
+            if (heat >= 100) {
+                boot_WaitShort();
+                ui_GameOver();
+                break;
+            }
+
+            if (time >= finish) {
+                boot_WaitShort();
+                ui_StageComplete(day, carType, &carRight[0]);
+                while (kb_AnyKey());
+                break;
+            }
         }
-
-        switch (shadePath) {
-            case 0:
-                if (shadeY > 24) {
-                    shadeY -= 4;
-                }
-                break;
-            case 1:
-                if (shadeY < 152) {
-                    shadeY += 4;
-                }
-                break;
-            case 2:
-                if (shadeX > 25) {
-                    shadeX -= 4;
-                }
-                break;
-            case 3:
-                if (shadeX < 144) {
-                    shadeX += 4;
-                }
-            default:
-                break;
-        }
-
-        draw(shadeX, shadeY, carX, carY, direction, carType, heat, (time * 100 / finish), &carRight[0], &carLeft[0], &carUp[0], &carDown[0]);
-
-        if (heat >= 100) {
-            boot_WaitShort();
-            ui_GameOver();
-        }
-
-        if (time >= finish) {
-            boot_WaitShort();
-            ui_StageComplete();
+        if (kb_IsDown(kb_KeyClear)) {
+            break;
         }
     }
     timer_Disable(1);

@@ -16,11 +16,11 @@ void ui_Cursor(uint16_t, uint16_t, uint8_t);
 
 void ui_VerticalIndicator(int, uint8_t, uint8_t, int);
 
-void ui_BackgroundFrame(void);
+void ui_BackgroundFrame(uint8_t);
 
 void ui_GameOver(void);
 
-void ui_StageComplete(void);
+void ui_StageComplete(uint8_t, uint8_t, gfx_sprite_t **);
 
 #ifdef __cplusplus
 }
