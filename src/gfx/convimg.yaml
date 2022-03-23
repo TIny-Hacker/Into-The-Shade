@@ -5,6 +5,7 @@ palettes:
       - color: {index: 1, r: 255, g: 0, b: 128}
       - color: {index: 2, r: 255, g: 255, b: 255}
       - color: {index: 3, r: 75, g: 100, b: 126}
+      - color: {index: 17, r: 123, g: 121, b: 156}
     images: automatic
 
 converts:
@@ -34,6 +35,8 @@ converts:
       - motorcycleUp.png
       - flame.png
       - stopwatch.png
+      - roadPuddle.png
+      - roadCrack.png
 
 outputs:
   - type: c

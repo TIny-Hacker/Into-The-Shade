@@ -19,6 +19,10 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
     gfx_SetColor(3);
     gfx_FillRectangle_NoClip(23, 21, 204, 194); // Background
 
+    gfx_ScaledTransparentSprite_NoClip(roadPuddle, 154, 42, 2, 2);
+    gfx_ScaledTransparentSprite_NoClip(roadCrack, 83, 139, 2, 2);
+    gfx_ScaledTransparentSprite_NoClip(roadCrack, 56, 84, 2, 2);
+
     gfx_SetColor(74);
     gfx_FillRectangle_NoClip(shadeX, shadeY, 80, 60);   // Shade
     
