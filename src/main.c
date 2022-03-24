@@ -5,6 +5,7 @@
 #include <graphx.h>
 #include <keypadc.h>
 #include <stdbool.h>
+#include <fileioc.h>
 
 #define TIMER_FREQ 32768
 #define ONE_SECOND (TIMER_FREQ / 1)
@@ -51,11 +52,21 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
 }
 
 int main(void) {
+    uint8_t shadeVar[2] = {0, 0};
+
+    ti_var_t slot = ti_Open("SHADE", "r");    // Appvar with preferences/progress
+
+    if (slot) {
+        ti_Read(&shadeVar, 2, 1, slot);
+
+    }
+
     gfx_Begin();
     gfx_SetPalette(global_palette, sizeof_global_palette, 0);
     gfx_SetTransparentColor(1);
 
-    uint8_t carType = 0;
+    uint8_t carType = shadeVar[0];
+    uint8_t day = shadeVar[1];
 
     gfx_sprite_t *carRight[5] = {greenCarRight, brownCarRight, redCarRight, truckRight, motorcycleRight}; //Different car colors for different directions
     gfx_sprite_t *carLeft[5] = {greenCarLeft, brownCarLeft, redCarLeft, truckLeft, motorcycleLeft};
@@ -132,7 +143,7 @@ int main(void) {
     timer_Set(1, THIRD_SECOND);
     timer_SetReload(1, THIRD_SECOND);
 
-    for (uint8_t day = 0; day <= 255; day++) {
+    for (day = shadeVar[1]; day <= 255; day++) {
         uint8_t carY = 23;
         int carX = 25;
         uint8_t shadeY = 50;
@@ -241,4 +252,17 @@ int main(void) {
     timer_Disable(1);
 
     gfx_End();
+
+    // Finish up my appvar stuff
+
+    shadeVar[0] = carType;
+    shadeVar[1] = day;
+
+    slot = ti_Open("SHADE", "w+");
+
+    ti_Write(&shadeVar, 2, 1, slot);
+
+    ti_SetArchiveStatus(true, slot);
+
+    return 0;
 }
