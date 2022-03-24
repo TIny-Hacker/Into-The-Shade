@@ -91,7 +91,9 @@ int main(void) {
     bool keyPressed = false;
     timer_Enable(1, TIMER_32K, TIMER_NOINT, TIMER_UP);
 
-    while (!(kb_IsDown(kb_KeyEnter) && cursorY == 75)) {
+    // Main menu
+
+    while (!(kb_IsDown(kb_KeyEnter) && cursorY == 75) && !kb_IsDown(kb_KeyClear)) {
         kb_Scan();
         if (!kb_AnyKey()) {
             keyPressed = false;
@@ -135,8 +137,8 @@ int main(void) {
         }
     }
 
-
     // Actual game stuff
+
     rtc_Enable(RTC_SEC_INT);
     srand(rtc_Time());
     timer_Disable(1);
@@ -144,6 +146,11 @@ int main(void) {
     timer_SetReload(1, THIRD_SECOND);
 
     for (day = shadeVar[1]; day <= 255; day++) {
+        kb_Scan();
+        if (kb_IsDown(kb_KeyClear)) {
+            break;
+        }
+
         uint8_t carY = 23;
         int carX = 25;
         uint8_t shadeY = 50;

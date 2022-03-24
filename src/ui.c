@@ -115,9 +115,12 @@ void ui_StageComplete(uint8_t day, uint8_t carType, gfx_sprite_t **carRight) {
     gfx_SetTextXY(189, 75);
     gfx_PrintInt(day + 1, 1);
     gfx_PrintStringXY("Complete!", 58, 100);
+    gfx_SetTextScale(1, 1);
+    gfx_PrintStringXY("Press Enter", 119, 145);
+    gfx_PrintStringXY("to Save and Continue", 92, 160);
 
     gfx_BlitBuffer();
-    while (!kb_IsDown(kb_KeyEnter) && carAnimation < 288) {
+    while (!kb_IsDown(kb_KeyEnter) && carAnimation < 288 && !kb_IsDown(kb_KeyClear)) {
         kb_Scan();
         gfx_SetColor(17);
         gfx_FillRectangle_NoClip(carAnimation - 2, 205, 32, 32);
