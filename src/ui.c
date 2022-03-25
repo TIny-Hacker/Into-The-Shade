@@ -86,7 +86,6 @@ void ui_BackgroundFrame(uint8_t day) {
     gfx_PrintStringXY("Day", 82, 222);
     gfx_SetTextXY(142, 222);
     gfx_PrintInt(day + 1, 1);
-
 }
 
 void ui_GameOver(void) {
@@ -95,7 +94,7 @@ void ui_GameOver(void) {
     gfx_FillScreen(17);
 
     gfx_SetTextFGColor(0);
-    gfx_PrintStringXY("Game Over!", 150, 100);  // I know it's off center but who cares
+    gfx_PrintStringXY("Game Over!", 150, 100);
 
     gfx_BlitBuffer();
 
@@ -128,4 +127,53 @@ void ui_StageComplete(uint8_t day, uint8_t carType, gfx_sprite_t **carRight) {
         gfx_BlitBuffer();
         carAnimation += 2;
     }
+}
+
+bool ui_Reset(void) {
+    bool reset = false;
+    uint8_t cursorY = 107;
+
+    gfx_SetDrawBuffer();
+    gfx_FillScreen(17);
+
+    gfx_SetTextScale(2, 2);
+    gfx_PrintStringXY("You have completed", 26, 55);
+    gfx_PrintStringXY("all 256 days. Reset?", 21, 75);
+
+    gfx_SetColor(2);
+    gfx_Rectangle_NoClip(117, 108, 87, 35);
+    gfx_Rectangle_NoClip(117, 154, 87, 35);
+    gfx_SetColor(0);
+    gfx_Rectangle_NoClip(118, 109, 85, 33);
+    gfx_Rectangle_NoClip(118, 155, 85, 33);
+    gfx_SetColor(3);
+    gfx_FillRectangle_NoClip(119, 110, 83, 31);
+    gfx_FillRectangle_NoClip(119, 156, 83, 31);
+
+    gfx_SetTextScale(3, 3);
+    gfx_PrintStringXY("Yes", 124, 115);
+    gfx_PrintStringXY("No", 136, 161);
+
+    gfx_BlitBuffer();
+
+    while (!kb_IsDown(kb_KeyClear) && !kb_IsDown(kb_KeyEnter)) {
+        kb_Scan();
+        gfx_SetColor(17);
+        if (kb_IsDown(kb_KeyDown)) {
+            cursorY = 153;
+            gfx_Rectangle_NoClip(116, 107, 89, 37);
+        } else if (kb_IsDown(kb_KeyUp)) {
+            cursorY = 107;
+            gfx_Rectangle_NoClip(116, 153, 89, 37);
+        }
+        gfx_SetColor(0);
+        gfx_Rectangle_NoClip(116, cursorY, 89, 37);
+        gfx_BlitBuffer();
+    }
+
+    if (kb_IsDown(kb_KeyEnter) && cursorY == 107) {
+        reset = true;
+    }
+
+    return reset;
 }

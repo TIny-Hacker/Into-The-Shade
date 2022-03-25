@@ -145,7 +145,15 @@ int main(void) {
     timer_Set(1, THIRD_SECOND);
     timer_SetReload(1, THIRD_SECOND);
 
-    for (day = shadeVar[1]; day <= 255; day++) {
+    while (kb_AnyKey());
+
+    if (shadeVar[1] == 255) {
+        if (ui_Reset()) {
+            shadeVar[1] = 0;
+        }
+    }
+
+    for (day = shadeVar[1]; day < 255; day++) {
         kb_Scan();
         if (kb_IsDown(kb_KeyClear)) {
             break;
@@ -256,6 +264,7 @@ int main(void) {
             break;
         }
     }
+
     timer_Disable(1);
 
     gfx_End();

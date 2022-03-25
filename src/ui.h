@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdint.h>
 #include <graphx.h>
+#include <stdbool.h>
 
 void ui_MainMenu(void);
 
@@ -21,6 +22,8 @@ void ui_BackgroundFrame(uint8_t);
 void ui_GameOver(void);
 
 void ui_StageComplete(uint8_t, uint8_t, gfx_sprite_t **);
+
+bool ui_Reset(void);
 
 #ifdef __cplusplus
 }
