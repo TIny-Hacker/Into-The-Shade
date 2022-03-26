@@ -51,6 +51,22 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
     gfx_SetDrawScreen();
 }
 
+void quit(uint8_t *shadeVar, uint8_t carType, uint8_t day) {
+    timer_Disable(1);
+    gfx_End();
+
+    shadeVar[0] = carType;
+    shadeVar[1] = day;
+
+    ti_var_t slot = ti_Open("SHADE", "w+");
+
+    ti_Write(&shadeVar, 2, 1, slot);
+
+    ti_SetArchiveStatus(true, slot);
+
+    exit(0);
+}
+
 int main(void) {
     uint8_t shadeVar[2] = {0, 0};
 
@@ -154,7 +170,7 @@ int main(void) {
     for (day = shadeVar[1]; day < 255; day++) {
         kb_Scan();
         if (kb_IsDown(kb_KeyClear)) {
-            break;
+            quit(&shadeVar[0], carType, day);
         }
 
         uint8_t carY = 23;
@@ -259,24 +275,9 @@ int main(void) {
             }
         }
         if (kb_IsDown(kb_KeyClear)) {
-            break;
+            quit(&shadeVar[0], carType, day);
         }
     }
 
-    timer_Disable(1);
-
-    gfx_End();
-
-    // Finish up my appvar stuff
-
-    shadeVar[0] = carType;
-    shadeVar[1] = day;
-
-    slot = ti_Open("SHADE", "w+");
-
-    ti_Write(&shadeVar, 2, 1, slot);
-
-    ti_SetArchiveStatus(true, slot);
-
-    return 0;
+    quit(&shadeVar[0], carType, day);
 }
