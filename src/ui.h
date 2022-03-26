@@ -25,6 +25,8 @@ void ui_StageComplete(uint8_t, uint8_t, gfx_sprite_t **);
 
 bool ui_Reset(void);
 
+void ui_DYWTSTFC(void);
+
 #ifdef __cplusplus
 }
 #endif

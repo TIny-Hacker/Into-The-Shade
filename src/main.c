@@ -92,7 +92,7 @@ int main(void) {
 
     gfx_SetDrawBuffer();
     ui_MainMenu(day);
-    ui_CarPicked(210, 76, carType, &carRight[0]);   // Whenever I pass an array of sprites, the compiler has a hiccup unless I put a [0] after it. Not sure why but it works!
+    ui_CarPicked(210, 76, carType, carRight);   // Whenever I pass an array of sprites, the compiler has a hiccup unless I put a [0] after it. Not sure why but it works!
     gfx_BlitBuffer();
 
     uint16_t cursorX = 107;
@@ -169,7 +169,7 @@ int main(void) {
     for (day = shadeVar[1]; day < 255; day++) {
         kb_Scan();
         if (kb_IsDown(kb_KeyClear)) {
-            quit(&shadeVar[0], carType, day);
+            quit(shadeVar, carType, day);
         }
 
         uint8_t carY = 23;
@@ -186,7 +186,7 @@ int main(void) {
         ui_BackgroundFrame(day);
         gfx_BlitBuffer();
 
-        draw(100, 50, carX, carY, 0, carType, heat, 0, &carRight[0], &carLeft[0], &carUp[0], &carDown[0]);
+        draw(100, 50, carX, carY, 0, carType, heat, 0, carRight, carLeft, carUp, carDown);
 
         while (kb_AnyKey());
         timer_Enable(1, TIMER_32K, TIMER_0INT, TIMER_DOWN);
@@ -258,7 +258,7 @@ int main(void) {
                     break;
             }
 
-            draw(shadeX, shadeY, carX, carY, direction, carType, heat, (time * 100 / finish), &carRight[0], &carLeft[0], &carUp[0], &carDown[0]);
+            draw(shadeX, shadeY, carX, carY, direction, carType, heat, (time * 100 / finish), carRight, carLeft, carUp, carDown);
 
             if (heat >= 100) {
                 boot_WaitShort();
@@ -268,15 +268,15 @@ int main(void) {
 
             if (time >= finish) {
                 boot_WaitShort();
-                ui_StageComplete(day, carType, &carRight[0]);
+                ui_StageComplete(day, carType, carRight);
                 while (kb_AnyKey());
                 break;
             }
         }
         if (kb_IsDown(kb_KeyClear)) {
-            quit(&shadeVar[0], carType, day);
+            quit(shadeVar, carType, day);
         }
     }
 
-    quit(&shadeVar[0], carType, day);
+    quit(shadeVar, carType, day);
 }

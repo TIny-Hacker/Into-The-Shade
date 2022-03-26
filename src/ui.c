@@ -197,3 +197,5 @@ bool ui_Reset(void) {
 
     return reset;
 }
+
+void ui_DYWTSTFC(void) {}
