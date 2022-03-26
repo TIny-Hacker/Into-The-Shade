@@ -52,7 +52,6 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
 }
 
 void quit(uint8_t *shadeVar, uint8_t carType, uint8_t day) {
-    timer_Disable(1);
     gfx_End();
 
     shadeVar[0] = carType;
