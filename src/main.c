@@ -76,7 +76,7 @@ int main(void) {
     // Main menu
 
     gfx_SetDrawBuffer();
-    ui_MainMenu();
+    ui_MainMenu(day);
     ui_CarPicked(210, 76, carType, &carRight[0]);   // Whenever I pass an array of sprites, the compiler has a hiccup unless I put a [0] after it. Not sure why but it works!
     gfx_BlitBuffer();
 
@@ -102,13 +102,13 @@ int main(void) {
         if (kb_IsDown(kb_KeyEnter) && cursorY != 75) {
             if (cursorX == 20) {
                 carType = 0;
-            } else if (cursorX == 77) {
+            } else if (cursorX == 77 && day >= 20) {
                 carType = 1;
-            } else if (cursorX == 134) {
+            } else if (cursorX == 134 && day >= 50) {
                 carType = 4;
-            } else if (cursorX == 191) {
+            } else if (cursorX == 191 && day >= 100) {
                 carType = 2;
-            } else if (cursorX == 248) {
+            } else if (cursorX == 248 && day >= 200) {
                 carType = 3;
             }
             ui_CarPicked(210, 76, carType, &carRight[0]);
@@ -144,8 +144,6 @@ int main(void) {
     timer_Disable(1);
     timer_Set(1, THIRD_SECOND);
     timer_SetReload(1, THIRD_SECOND);
-
-    while (kb_AnyKey());
 
     if (shadeVar[1] == 255) {
         if (ui_Reset()) {

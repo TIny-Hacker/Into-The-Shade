@@ -4,7 +4,7 @@
 #include <graphx.h>
 #include <keypadc.h>
 
-void ui_MainMenu(void) {
+void ui_MainMenu(uint8_t day) {
     gfx_FillScreen(17);
     gfx_SetColor(2);
     gfx_Rectangle_NoClip(21, 140, 49, 49);
@@ -32,11 +32,29 @@ void ui_MainMenu(void) {
     gfx_PrintStringXY("Into the Shade", 7, 20);
     gfx_PrintStringXY("Play", 112, 80);
 
+    gfx_SetTextScale(4, 4);
+
     gfx_ScaledTransparentSprite_NoClip(greenCarRight, 29, 149, 2, 2);
-    gfx_ScaledTransparentSprite_NoClip(brownCarRight, 86, 149, 2, 2);
-    gfx_ScaledTransparentSprite_NoClip(motorcycleRight, 143, 149, 2, 2);
-    gfx_ScaledTransparentSprite_NoClip(redCarRight, 200, 149, 2, 2);
-    gfx_ScaledTransparentSprite_NoClip(truckRight, 261, 149, 2, 2);
+    if (day >= 20) {
+        gfx_ScaledTransparentSprite_NoClip(brownCarRight, 86, 149, 2, 2);
+    } else {
+        gfx_PrintStringXY("?", 90, 149);
+    }
+    if (day >= 50) {
+        gfx_ScaledTransparentSprite_NoClip(motorcycleRight, 143, 149, 2, 2);
+    } else {
+        gfx_PrintStringXY("?", 147, 149);
+    }
+    if (day >= 100) {
+        gfx_ScaledTransparentSprite_NoClip(redCarRight, 200, 149, 2, 2);
+    } else {
+        gfx_PrintStringXY("?", 204, 149);
+    }
+    if (day >= 200) {
+        gfx_ScaledTransparentSprite_NoClip(truckRight, 261, 149, 2, 2);
+    } else {
+        gfx_PrintStringXY("?", 261, 149);
+    }
 }
 
 void ui_CarPicked(uint16_t x, uint8_t y, uint8_t carType, gfx_sprite_t **carRight) {
@@ -130,6 +148,8 @@ void ui_StageComplete(uint8_t day, uint8_t carType, gfx_sprite_t **carRight) {
 }
 
 bool ui_Reset(void) {
+    while (kb_AnyKey());
+
     bool reset = false;
     uint8_t cursorY = 107;
 
