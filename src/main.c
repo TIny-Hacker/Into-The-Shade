@@ -51,21 +51,6 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
     gfx_SetDrawScreen();
 }
 
-void quit(uint8_t *shadeVar, uint8_t carType, uint8_t day) {
-    gfx_End();
-
-    shadeVar[0] = carType;
-    shadeVar[1] = day;
-
-    ti_var_t slot = ti_Open("SHADE", "w+");
-
-    ti_Write(&shadeVar, 2, 1, slot);
-
-    ti_SetArchiveStatus(true, slot);
-
-    exit(0);
-}
-
 int main(void) {
     uint8_t shadeVar[2] = {0, 0};
 
@@ -73,7 +58,6 @@ int main(void) {
 
     if (slot) {
         ti_Read(&shadeVar, 2, 1, slot);
-
     }
 
     gfx_Begin();
@@ -88,9 +72,10 @@ int main(void) {
     gfx_sprite_t *carDown[5] = {greenCarDown, brownCarDown, redCarDown, truckDown, motorcycleDown};
     gfx_sprite_t *carUp[5] = {greenCarUp, brownCarUp, redCarUp, truckUp, motorcycleUp};
 
+    gfx_SetDrawBuffer();
+    
     // Main menu
 
-    gfx_SetDrawBuffer();
     ui_MainMenu(day);
     ui_CarPicked(210, 76, carType, carRight);   // Whenever I pass an array of sprites, the compiler has a hiccup unless I put a [0] after it. Not sure why but it works!
     gfx_BlitBuffer();
@@ -169,7 +154,7 @@ int main(void) {
     for (day = shadeVar[1]; day < 255; day++) {
         kb_Scan();
         if (kb_IsDown(kb_KeyClear)) {
-            quit(shadeVar, carType, day);
+            break;
         }
 
         uint8_t carY = 23;
@@ -274,9 +259,21 @@ int main(void) {
             }
         }
         if (kb_IsDown(kb_KeyClear)) {
-            quit(shadeVar, carType, day);
+            break;
         }
     }
+    if (day == 255) {
+        ui_DYWTSTFC();
+    }
 
-    quit(shadeVar, carType, day);
+    gfx_End();
+
+    shadeVar[0] = carType;
+    shadeVar[1] = day;
+
+    slot = ti_Open("SHADE", "w+");
+
+    ti_Write(&shadeVar, 2, 1, slot);
+
+    ti_SetArchiveStatus(true, slot);
 }

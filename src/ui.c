@@ -198,4 +198,65 @@ bool ui_Reset(void) {
     return reset;
 }
 
-void ui_DYWTSTFC(void) {}
+void ui_DYWTSTFC(void) {
+    while (kb_AnyKey());
+
+    uint8_t cursorY = 107;
+
+    gfx_FillScreen(17);
+
+    gfx_SetTextScale(2, 2);
+    gfx_PrintStringXY("Do you want to see", 26, 55);
+    gfx_PrintStringXY("the Flintstone's car?", 21, 75);
+
+    gfx_SetColor(2);
+    gfx_Rectangle_NoClip(117, 108, 87, 35);
+    gfx_Rectangle_NoClip(117, 154, 87, 35);
+    gfx_SetColor(0);
+    gfx_Rectangle_NoClip(118, 109, 85, 33);
+    gfx_Rectangle_NoClip(118, 155, 85, 33);
+    gfx_SetColor(3);
+    gfx_FillRectangle_NoClip(119, 110, 83, 31);
+    gfx_FillRectangle_NoClip(119, 156, 83, 31);
+
+    gfx_SetTextScale(3, 3);
+    gfx_PrintStringXY("Yes", 124, 115);
+    gfx_PrintStringXY("No", 136, 161);
+
+    gfx_BlitBuffer();
+
+    while (!kb_IsDown(kb_KeyClear) && !kb_IsDown(kb_KeyEnter)) {
+        kb_Scan();
+        gfx_SetColor(17);
+        if (kb_IsDown(kb_KeyDown)) {
+            cursorY = 153;
+            gfx_Rectangle_NoClip(116, 107, 89, 37);
+        } else if (kb_IsDown(kb_KeyUp)) {
+            cursorY = 107;
+            gfx_Rectangle_NoClip(116, 153, 89, 37);
+        }
+        gfx_SetColor(0);
+        gfx_Rectangle_NoClip(116, cursorY, 89, 37);
+        gfx_BlitBuffer();
+    }
+    gfx_SetTextScale(2, 2);
+    gfx_SetColor(17);
+
+    if (kb_IsDown(kb_KeyEnter) && cursorY == 107) {
+        while(kb_AnyKey());
+        while (!kb_IsDown(kb_KeyEnter) && !kb_IsDown(kb_KeyClear)) {
+            gfx_FillScreen(17);
+            gfx_PrintStringXY("Flintstone's Car", 41, 100);
+            for (int carX = 0; carX < 288; carX += 2) {
+                gfx_FillRectangle_NoClip(carX - 2, 205, 32, 32);
+                gfx_ScaledTransparentSprite_NoClip(FC, carX, 205, 2, 2);
+                gfx_BlitBuffer();
+                kb_Scan();
+                if (kb_IsDown(kb_KeyClear) || kb_IsDown(kb_KeyEnter)) {
+                    break;
+                }
+            }
+        }
+    }
+    gfx_BlitBuffer();
+}
