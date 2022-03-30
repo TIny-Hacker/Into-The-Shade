@@ -247,15 +247,23 @@ void ui_DYWTSTFC(void) {
         while (!kb_IsDown(kb_KeyEnter) && !kb_IsDown(kb_KeyClear)) {
             gfx_FillScreen(17);
             gfx_SetTextScale(3, 3);
-            gfx_PrintStringXY("Credits:", 72, 50);
+            gfx_PrintStringXY("Credits:", 72, 20);
             gfx_SetTextScale(2, 2);
-            gfx_PrintStringXY("Coding - TIny_Hacker", 12, 86);
-            gfx_PrintStringXY("Car Sprites - Edu", 40, 110);
-            gfx_PrintStringXY("Support - RoccoLox", 27, 145);
+            gfx_PrintStringXY("Coding - TIny_Hacker", 12, 56);
+            gfx_PrintStringXY("Car Sprites - Edu", 40, 80);
+            gfx_PrintStringXY("Support - RoccoLox", 27, 115);
             gfx_SetTextScale(1, 1);
-            gfx_PrintStringXY("(edusilvart.itch.io/sprite-stack-cars)", 17, 130);
+            gfx_PrintStringXY("(edusilvart.itch.io/sprite-stack-cars)", 17, 100);
+            gfx_ScaledSprite_NoClip(qr, 127, 140, 2, 2);
+            gfx_SetColor(3);
+            gfx_Rectangle_NoClip(126, 139, 68, 68);
+            gfx_SetColor(0);
+            gfx_Rectangle_NoClip(125, 138, 70, 70);
+            gfx_SetColor(2);
+            gfx_Rectangle_NoClip(124, 137, 72, 72);
+            gfx_SetColor(17);
             for (int carX = 0; carX < 288; carX += 2) {
-                gfx_FillRectangle_NoClip(carX - 2, 205, 32, 32);
+                gfx_FillRectangle_NoClip(carX - 2, 211, 32, 26);
                 gfx_ScaledTransparentSprite_NoClip(FC, carX, 205, 2, 2);
                 gfx_BlitBuffer();
                 kb_Scan();
