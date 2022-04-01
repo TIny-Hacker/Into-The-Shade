@@ -212,7 +212,7 @@ int main(void) {
                 if (carX >= shadeX - 10 && carY >= shadeY - 10 && carX <= shadeX + 70 && carY <= shadeY + 50) {   // If the car is in the shade
                     heat -= (heat > 0);
                 } else {
-                    heat += (heat <= 99) * 2;
+                    heat += (heat <= 99) * ((day / 25) + 1);
                 }
                 time++;
                 timer_AckInterrupt(1, TIMER_RELOADED);
