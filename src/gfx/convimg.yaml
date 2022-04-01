@@ -6,6 +6,7 @@ palettes:
       - color: {index: 2, r: 255, g: 255, b: 255}
       - color: {index: 3, r: 75, g: 100, b: 126}
       - color: {index: 17, r: 123, g: 121, b: 156}
+      - color: {index: 47, r: 41, g: 202, b: 107}
     images: automatic
 
 converts:
@@ -35,6 +36,7 @@ converts:
       - motorcycleUp.png
       - FC.png
       - qr.png
+      - shade.png
       - flame.png
       - stopwatch.png
       - roadPuddle.png

@@ -24,8 +24,7 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
     gfx_ScaledTransparentSprite_NoClip(roadCrack, 83, 139, 2, 2);
     gfx_ScaledTransparentSprite_NoClip(roadCrack, 56, 84, 2, 2);
 
-    gfx_SetColor(74);
-    gfx_FillRectangle_NoClip(shadeX, shadeY, 80, 60);   // Shade
+    gfx_ScaledTransparentSprite_NoClip(shade, shadeX, shadeY, 3, 3);   // Shade
     
     switch (direction) {
         case 0:
@@ -213,7 +212,7 @@ int main(void) {
                 if (carX >= shadeX - 10 && carY >= shadeY - 10 && carX <= shadeX + 70 && carY <= shadeY + 50) {   // If the car is in the shade
                     heat -= (heat > 0);
                 } else {
-                    heat += (heat < 99) * 2;
+                    heat += (heat <= 99) * 2;
                 }
                 time++;
                 timer_AckInterrupt(1, TIMER_RELOADED);

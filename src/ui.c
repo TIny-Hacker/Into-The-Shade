@@ -107,12 +107,13 @@ void ui_BackgroundFrame(uint8_t day) {
 }
 
 void ui_GameOver(void) {
+    gfx_SetTextScale(4, 4);
     gfx_SetDrawBuffer();
 
     gfx_FillScreen(17);
 
     gfx_SetTextFGColor(0);
-    gfx_PrintStringXY("Game Over!", 150, 100);
+    gfx_PrintStringXY("Game Over!", 18, 100);
 
     gfx_BlitBuffer();
 
