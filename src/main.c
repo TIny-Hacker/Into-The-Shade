@@ -13,16 +13,18 @@
 #define THIRD_SECOND (TIMER_FREQ / 3)
 #define QRTR_SECOND (TIMER_FREQ / 4)
 
-void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType, uint8_t heat, int time, gfx_sprite_t **carRight, gfx_sprite_t **carLeft, gfx_sprite_t **carUp, gfx_sprite_t **carDown) {
+void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType, uint8_t heat, uint8_t weather, int time, gfx_sprite_t **carRight, gfx_sprite_t **carLeft, gfx_sprite_t **carUp, gfx_sprite_t **carDown) {
+    gfx_sprite_t *roadStuff[2] = {roadCrack, snow};
     gfx_BlitScreen();    
     gfx_SetDrawBuffer();
 
-    gfx_SetColor(3);
+    gfx_SetColor(3 + weather);
+
     gfx_FillRectangle_NoClip(23, 21, 204, 194); // Background
 
     gfx_ScaledTransparentSprite_NoClip(roadPuddle, 154, 42, 2, 2);
-    gfx_ScaledTransparentSprite_NoClip(roadCrack, 83, 139, 2, 2);
-    gfx_ScaledTransparentSprite_NoClip(roadCrack, 56, 84, 2, 2);
+    gfx_ScaledTransparentSprite_NoClip(roadStuff[weather], 83, 139, 2, 2);
+    gfx_ScaledTransparentSprite_NoClip(roadStuff[weather], 56, 84, 2, 2);
 
     gfx_ScaledTransparentSprite_NoClip(shade, shadeX, shadeY, 3, 3);   // Shade
     
@@ -165,12 +167,13 @@ int main(void) {
         uint8_t heat = 0;
         int time = 0;
         int finish = 150;
+        uint8_t weather = randInt(0, 1);    // Normal, snow
 
         gfx_SetDrawBuffer();
         ui_BackgroundFrame(day);
         gfx_BlitBuffer();
 
-        draw(100, 50, carX, carY, 0, carType, heat, 0, carRight, carLeft, carUp, carDown);
+        draw(100, 50, carX, carY, 0, carType, heat, weather, 0, carRight, carLeft, carUp, carDown);
 
         while (kb_AnyKey());
         timer_Enable(1, TIMER_32K, TIMER_0INT, TIMER_DOWN);
@@ -210,9 +213,9 @@ int main(void) {
             if (timer_ChkInterrupt(1, TIMER_RELOADED)) {
                 shadePath = randInt(0, 4);
                 if (carX >= shadeX - 10 && carY >= shadeY - 10 && carX <= shadeX + 70 && carY <= shadeY + 50) {   // If the car is in the shade
-                    heat -= (heat > 0);
+                    heat -= (heat > 0) + weather;
                 } else {
-                    heat += (heat <= 99) * ((day / 25) + 1);
+                    heat += (heat <= 99) * (day / 25 + 1);
                 }
                 time++;
                 timer_AckInterrupt(1, TIMER_RELOADED);
@@ -242,7 +245,7 @@ int main(void) {
                     break;
             }
 
-            draw(shadeX, shadeY, carX, carY, direction, carType, heat, (time * 100 / finish), carRight, carLeft, carUp, carDown);
+            draw(shadeX, shadeY, carX, carY, direction, carType, heat, weather, (time * 100 / finish), carRight, carLeft, carUp, carDown);
 
             if (heat >= 100) {
                 boot_WaitShort();
