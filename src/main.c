@@ -213,9 +213,9 @@ int main(void) {
             if (timer_ChkInterrupt(1, TIMER_RELOADED)) {
                 shadePath = randInt(0, 4);
                 if (carX >= shadeX - 10 && carY >= shadeY - 10 && carX <= shadeX + 70 && carY <= shadeY + 50) {   // If the car is in the shade
-                    heat -= (heat > 0) + weather;
+                    heat -= (heat > 0) + weather;   // You cool off faster in different weather
                 } else {
-                    heat += (heat <= 99) * (day / 25 + 1);
+                    heat += (heat <= 99) * (day / 25 + 1) + !(weather); // You heat up faster in plain weather (Not snow or rain)
                 }
                 time++;
                 timer_AckInterrupt(1, TIMER_RELOADED);
