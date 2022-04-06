@@ -14,7 +14,7 @@
 #define QRTR_SECOND (TIMER_FREQ / 4)
 
 void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType, uint8_t heat, uint8_t weather, int time, gfx_sprite_t **carRight, gfx_sprite_t **carLeft, gfx_sprite_t **carUp, gfx_sprite_t **carDown) {
-    gfx_sprite_t *roadStuff[2] = {roadCrack, snow};
+    gfx_sprite_t *roadStuff[3] = {roadCrack, snow, rain};
     gfx_BlitScreen();    
     gfx_SetDrawBuffer();
 
@@ -167,7 +167,7 @@ int main(void) {
         uint8_t heat = 0;
         int time = 0;
         int finish = 150;
-        uint8_t weather = randInt(0, 1);    // Normal, snow
+        uint8_t weather = randInt(0, 2);    // Normal, snow, rain
 
         gfx_SetDrawBuffer();
         ui_BackgroundFrame(day);
