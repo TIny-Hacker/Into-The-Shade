@@ -46,6 +46,9 @@ converts:
       - roadCrack.png
       - snow.png
       - rain.png
+      - sunIndicator.png
+      - snowIndicator.png
+      - rainIndicator.png
 
 outputs:
   - type: c

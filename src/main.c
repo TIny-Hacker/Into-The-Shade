@@ -15,6 +15,7 @@
 
 void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType, uint8_t heat, uint8_t weather, int time, gfx_sprite_t **carRight, gfx_sprite_t **carLeft, gfx_sprite_t **carUp, gfx_sprite_t **carDown) {
     gfx_sprite_t *roadStuff[3] = {roadCrack, snow, rain};
+    gfx_sprite_t *weatherIndicator[3] = {sunIndicator, snowIndicator, rainIndicator};
     gfx_BlitScreen();    
     gfx_SetDrawBuffer();
 
@@ -47,6 +48,7 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
 
     ui_VerticalIndicator(251, 18, 47, time);   // Time and heat indicators
     ui_VerticalIndicator(279, 18, 160, heat);
+    gfx_ScaledTransparentSprite_NoClip(weatherIndicator[weather], 55, 218, 2, 2);
 
     gfx_BlitBuffer();
     gfx_SetDrawScreen();
