@@ -42,7 +42,8 @@ converts:
       - shade.png
       - flame.png
       - stopwatch.png
-      - roadPuddle.png
+      - meltedPond.png
+      - frozenPond.png
       - roadCrack.png
       - snow.png
       - rain.png
