@@ -16,7 +16,7 @@
 void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType, uint8_t heat, uint8_t weather, int time, gfx_sprite_t **carRight, gfx_sprite_t **carLeft, gfx_sprite_t **carUp, gfx_sprite_t **carDown) {
     gfx_sprite_t *roadStuff[3] = {roadCrack, snow, rain};
     gfx_sprite_t *weatherIndicator[3] = {sunIndicator, snowIndicator, rainIndicator};
-    gfx_sprite_t *pond[3] = {meltedPond, frozenPond, meltedPond};
+    gfx_sprite_t *pond[2] = {meltedPond, frozenPond};
     gfx_BlitScreen();    
     gfx_SetDrawBuffer();
 
@@ -24,7 +24,7 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
 
     gfx_FillRectangle_NoClip(23, 21, 204, 194); // Background
 
-    gfx_ScaledTransparentSprite_NoClip(pond[weather], 134, 102, 2, 2);
+    gfx_ScaledTransparentSprite_NoClip(pond[(weather == 1)], 125, 102, 3, 3);
     gfx_ScaledTransparentSprite_NoClip(roadStuff[weather], 83, 139, 2, 2);
     gfx_ScaledTransparentSprite_NoClip(roadStuff[weather], 56, 84, 2, 2);
 
