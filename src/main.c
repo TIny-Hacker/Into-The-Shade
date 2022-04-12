@@ -13,7 +13,7 @@
 #define THIRD_SECOND (TIMER_FREQ / 3)
 #define QRTR_SECOND (TIMER_FREQ / 4)
 
-void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction, uint8_t carType, uint8_t heat, uint8_t weather, int time, gfx_sprite_t **carRight, gfx_sprite_t **carLeft, gfx_sprite_t **carUp, gfx_sprite_t **carDown) {
+void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, int *roadItemX, uint8_t *roadItemY, uint8_t direction, uint8_t carType, uint8_t heat, uint8_t weather, int time, gfx_sprite_t **carRight, gfx_sprite_t **carLeft, gfx_sprite_t **carUp, gfx_sprite_t **carDown) {
     gfx_sprite_t *roadStuff[3] = {roadCrack, snow, rain};
     gfx_sprite_t *weatherIndicator[3] = {sunIndicator, snowIndicator, rainIndicator};
     gfx_sprite_t *pond[2] = {meltedPond, frozenPond};
@@ -24,9 +24,9 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, uint8_t direction,
 
     gfx_FillRectangle_NoClip(23, 21, 204, 194); // Background
 
-    gfx_ScaledTransparentSprite_NoClip(pond[(weather == 1)], 125, 102, 3, 3);
-    gfx_ScaledTransparentSprite_NoClip(roadStuff[weather], 83, 139, 2, 2);
-    gfx_ScaledTransparentSprite_NoClip(roadStuff[weather], 56, 84, 2, 2);
+    gfx_ScaledTransparentSprite_NoClip(pond[(weather == 1)], roadItemX[2], roadItemY[2], 3, 3);
+    gfx_ScaledTransparentSprite_NoClip(roadStuff[weather], roadItemX[0], roadItemY[0], 2, 2);
+    gfx_ScaledTransparentSprite_NoClip(roadStuff[weather], roadItemX[1], roadItemY[1], 2, 2);
 
     gfx_ScaledTransparentSprite_NoClip(shade, shadeX, shadeY, 3, 3);   // Shade
     
@@ -143,6 +143,7 @@ int main(void) {
 
     // Actual game stuff
 
+
     rtc_Enable(RTC_SEC_INT);
     srand(rtc_Time());
     timer_Disable(1);
@@ -171,12 +172,14 @@ int main(void) {
         int time = 0;
         int finish = 150;
         uint8_t weather = randInt(0, 2);    // Normal, snow, rain
+        int roadItemX[3] = {randInt(24, 178), randInt(29, 96), randInt(125, 170)};
+        uint8_t roadItemY[3] = {randInt(23, 64), randInt(97, 181), randInt(102, 156)};
 
         gfx_SetDrawBuffer();
         ui_BackgroundFrame(day);
         gfx_BlitBuffer();
 
-        draw(100, 50, carX, carY, 0, carType, heat, weather, 0, carRight, carLeft, carUp, carDown);
+        draw(100, 50, carX, carY, roadItemX, roadItemY, 0, carType, heat, weather, 0, carRight, carLeft, carUp, carDown);
 
         while (kb_AnyKey());
         timer_Enable(1, TIMER_32K, TIMER_0INT, TIMER_DOWN);
@@ -250,7 +253,7 @@ int main(void) {
                     break;
             }
 
-            draw(shadeX, shadeY, carX, carY, direction, carType, heat, weather, (time * 100 / finish), carRight, carLeft, carUp, carDown);
+            draw(shadeX, shadeY, carX, carY, roadItemX, roadItemY, direction, carType, heat, weather, (time * 100 / finish), carRight, carLeft, carUp, carDown);
 
             if (heat >= 100) {
                 boot_WaitShort();
