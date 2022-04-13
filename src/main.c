@@ -221,9 +221,16 @@ int main(void) {
             if (timer_ChkInterrupt(1, TIMER_RELOADED)) {
                 shadePath = randInt(0, 4);
                 if (carX >= shadeX - 10 && carY >= shadeY - 10 && carX <= shadeX + 70 && carY <= shadeY + 50) {   // If the car is in the shade
-                    heat -= (heat > 2) + (weather > 0 && heat > 2);   // You cool off faster in different weather
+                    if (weather != 2) {
+                        heat -= (heat > 3) + (weather == 1);   // You cool off faster in different weather
+                    } else {
+                        heat += (heat <= 99) * 3;
+                    }
                 } else {
                     heat += (heat <= 99) * (day / 25 + 1) + !(weather); // You heat up faster in plain weather (Not snow or rain)
+                }
+                if ((weather == 2) && gfx_CheckRectangleHotspot(carX, carY + 5, 32, 32, roadItemX[2], roadItemY[2], 54, 54)) {
+                    heat -= (heat > (day / 25 + 1)) * (day / 25 + 1) +1;
                 }
                 time++;
                 timer_AckInterrupt(1, TIMER_RELOADED);
