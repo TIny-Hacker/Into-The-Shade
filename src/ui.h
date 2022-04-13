@@ -11,6 +11,8 @@ extern "C" {
 
 void ui_MainMenu(uint8_t);
 
+void ui_ScreenWipe(uint8_t);
+
 void ui_CarPicked(uint16_t, uint8_t, uint8_t, gfx_sprite_t **);
 
 void ui_Cursor(uint16_t, uint16_t, uint8_t);

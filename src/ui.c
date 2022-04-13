@@ -57,6 +57,13 @@ void ui_MainMenu(uint8_t day) {
     }
 }
 
+void ui_ScreenWipe(uint8_t color) {
+    gfx_SetColor(color);
+    for (uint8_t height = 5; height < 240; height += 5) {
+        gfx_FillRectangle_NoClip(0, 0, 320, height);
+    }
+}
+
 void ui_CarPicked(uint16_t x, uint8_t y, uint8_t carType, gfx_sprite_t **carRight) {
     gfx_SetColor(2);
     gfx_Rectangle_NoClip(x, y, 32, 32);
@@ -107,6 +114,8 @@ void ui_BackgroundFrame(uint8_t day) {
 }
 
 void ui_GameOver(void) {
+    ui_ScreenWipe(17);
+
     gfx_SetTextScale(4, 4);
     gfx_SetDrawBuffer();
 
@@ -123,6 +132,7 @@ void ui_GameOver(void) {
 }
 
 void ui_StageComplete(uint8_t day, uint8_t carType, gfx_sprite_t **carRight) {
+    ui_ScreenWipe(17);
     int16_t carAnimation = 0;
     gfx_SetDrawBuffer();
     gfx_FillScreen(17);
@@ -146,6 +156,7 @@ void ui_StageComplete(uint8_t day, uint8_t carType, gfx_sprite_t **carRight) {
         gfx_BlitBuffer();
         carAnimation += 2;
     }
+    ui_ScreenWipe(17);
 }
 
 bool ui_Reset(void) {
@@ -200,6 +211,7 @@ bool ui_Reset(void) {
 }
 
 void ui_DYWTSTFC(void) {
+    ui_ScreenWipe(17);
     while (kb_AnyKey());
 
     uint8_t cursorY = 107;

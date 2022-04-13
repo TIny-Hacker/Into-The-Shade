@@ -141,8 +141,8 @@ int main(void) {
         }
     }
 
+    ui_ScreenWipe(17);
     // Actual game stuff
-
 
     rtc_Enable(RTC_SEC_INT);
     srand(rtc_Time());
@@ -185,7 +185,7 @@ int main(void) {
         timer_Enable(1, TIMER_32K, TIMER_0INT, TIMER_DOWN);
 
         while (!kb_IsDown(kb_KeyClear)) {
-            if (!(gfx_CheckRectangleHotspot(carX, carY + 5, 32, 32, 125, 102, 54, 54) && weather == 1)) {   // You can slide on the ice in snow
+            if (!(gfx_CheckRectangleHotspot(carX, carY + 5, 32, 32, roadItemX[2], roadItemY[2], 54, 54) && weather == 1)) {   // You can slide on the ice in snow
                 kb_Scan();
             }
 
