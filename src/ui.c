@@ -13,6 +13,7 @@ void ui_MainMenu(uint8_t day) {
     gfx_Rectangle_NoClip(192, 140, 49, 49);
     gfx_Rectangle_NoClip(249, 140, 49, 49);
     gfx_Rectangle_NoClip(108, 76, 92, 32);
+    gfx_Rectangle_NoClip(66, 76, 32, 32);
     gfx_SetColor(0);
     gfx_Rectangle_NoClip(22, 141, 47, 47);
     gfx_Rectangle_NoClip(79, 141, 47, 47);
@@ -20,6 +21,7 @@ void ui_MainMenu(uint8_t day) {
     gfx_Rectangle_NoClip(193, 141, 47, 47);
     gfx_Rectangle_NoClip(250, 141, 47, 47);
     gfx_Rectangle_NoClip(109, 77, 90, 30);
+    gfx_Rectangle_NoClip(67, 77, 30, 30);
     gfx_SetColor(3);
     gfx_FillRectangle_NoClip(23, 142, 45, 45);
     gfx_FillRectangle_NoClip(80, 142, 45, 45);
@@ -27,13 +29,17 @@ void ui_MainMenu(uint8_t day) {
     gfx_FillRectangle_NoClip(194, 142, 45, 45);
     gfx_FillRectangle_NoClip(251, 142, 45, 45);
     gfx_FillRectangle_NoClip(110, 78, 88, 28);
+    gfx_FillRectangle_NoClip(68, 78, 28, 28);
 
     gfx_SetTextScale(3, 3);
     gfx_PrintStringXY("Into the Shade", 7, 20);
     gfx_PrintStringXY("Play", 112, 80);
+    gfx_SetTextScale(2, 2);
+    gfx_PrintStringXY("Day ", 109, 208);
+    gfx_PrintInt(day, 3);
 
     gfx_SetTextScale(4, 4);
-
+    gfx_TransparentSprite_NoClip(help, 73, 83);
     gfx_ScaledTransparentSprite_NoClip(greenCarRight, 29, 149, 2, 2);
     if (day >= 20) {
         gfx_ScaledTransparentSprite_NoClip(brownCarRight, 86, 149, 2, 2);

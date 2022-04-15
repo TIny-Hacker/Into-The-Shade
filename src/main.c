@@ -141,7 +141,6 @@ int main(void) {
         }
     }
 
-    ui_ScreenWipe(17);
     // Actual game stuff
 
     rtc_Enable(RTC_SEC_INT);
@@ -161,6 +160,7 @@ int main(void) {
         if (kb_IsDown(kb_KeyClear)) {
             break;
         }
+        ui_ScreenWipe(17);
 
         uint8_t carY = 23;
         int carX = 25;
@@ -230,7 +230,7 @@ int main(void) {
                     heat += (heat <= 99) * (day / 25 + 1) + !(weather); // You heat up faster in plain weather (Not snow or rain)
                 }
                 if ((weather == 2) && gfx_CheckRectangleHotspot(carX, carY + 5, 32, 32, roadItemX[2], roadItemY[2], 54, 54)) {
-                    heat -= (heat > (day / 25 + 1)) * (day / 25 + 1) +1;
+                    heat -= (heat > (day / 25 + 1)) * (day / 25 + 1) + 1;
                 }
                 time++;
                 timer_AckInterrupt(1, TIMER_RELOADED);
