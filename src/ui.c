@@ -36,7 +36,7 @@ void ui_MainMenu(uint8_t day) {
     gfx_PrintStringXY("Play", 112, 80);
     gfx_SetTextScale(2, 2);
     gfx_PrintStringXY("Day ", 109, 208);
-    gfx_PrintInt(day, 3);
+    gfx_PrintInt(day + 1, 3);
 
     gfx_SetTextScale(4, 4);
     gfx_TransparentSprite_NoClip(help, 73, 83);
@@ -63,6 +63,33 @@ void ui_MainMenu(uint8_t day) {
     }
 }
 
+void ui_HelpMenu(void) {
+    ui_ScreenWipe(17);
+    gfx_SetTextScale(3, 3);
+    gfx_PrintStringXY("Help", 112, 20);
+    gfx_SetColor(0);
+    gfx_FillRectangle_NoClip(20, 50, 280, 3);
+    gfx_SetTextScale(1, 1);
+    gfx_PrintStringXY("Use the arrow keys to move the car", 30, 60);
+    gfx_PrintStringXY("around the screen, keeping it from", 30, 70);
+    gfx_PrintStringXY("overheating.", 30, 80);
+    gfx_PrintStringXY("There are diferent types of weather.", 30, 96);
+    gfx_PrintStringXY("In rainy weather, avoid the shade,", 30, 106);
+    gfx_PrintStringXY("because of acid rain. Instead, go in", 30, 116);
+    gfx_PrintStringXY("the pond. In snowy weather, driving on", 30, 126);
+    gfx_PrintStringXY("the frozen pond will cause you to lose", 30, 136);
+    gfx_PrintStringXY("control of your vehicle.", 30, 146);
+    gfx_PrintStringXY("Try to survive for 256 in-game days", 30, 162);
+    gfx_PrintStringXY("in order to win!", 30, 172);
+    gfx_PrintStringXY("Have fun!", 30, 188);
+
+    while(!kb_IsDown(kb_KeyClear)) {
+        kb_Scan();
+    }
+    while(kb_AnyKey());
+    ui_ScreenWipe(17);
+}
+
 void ui_ScreenWipe(uint8_t color) {
     gfx_SetColor(color);
     for (uint8_t height = 5; height < 240; height += 5) {
@@ -82,8 +109,10 @@ void ui_CarPicked(uint16_t x, uint8_t y, uint8_t carType, gfx_sprite_t **carRigh
 
 void ui_Cursor(uint16_t color, uint16_t cursorX, uint8_t cursorY) {
     gfx_SetColor(color);
-    if (cursorY == 75) {
+    if (cursorY == 75 && cursorX == 107) {
         gfx_Rectangle_NoClip(cursorX, cursorY, 94, 34);
+    } else if (cursorY == 75 && cursorX == 65) {
+        gfx_Rectangle_NoClip(cursorX, cursorY, 34, 34);
     } else {
         gfx_Rectangle_NoClip(cursorX, cursorY, 51, 51);
     }
@@ -114,8 +143,7 @@ void ui_BackgroundFrame(uint8_t day) {
     gfx_ScaledTransparentSprite_NoClip(flame, 281, 219, 2, 2);
     gfx_ScaledTransparentSprite_NoClip(stopwatch, 253, 219, 2, 2);
     gfx_SetTextScale(2, 2);
-    gfx_PrintStringXY("Day", 82, 222);
-    gfx_SetTextXY(142, 222);
+    gfx_PrintStringXY("Day ", 88, 222);
     gfx_PrintInt(day + 1, 1);
 }
 

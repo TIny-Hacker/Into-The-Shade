@@ -97,7 +97,7 @@ int main(void) {
 
     // Main menu
 
-    while (!(kb_IsDown(kb_KeyEnter) && cursorY == 75) && !kb_IsDown(kb_KeyClear)) {
+    while (!(kb_IsDown(kb_KeyEnter) && cursorY == 75 && cursorY == 107) && !kb_IsDown(kb_KeyClear)) {
         kb_Scan();
         if (!kb_AnyKey()) {
             keyPressed = false;
@@ -116,6 +116,11 @@ int main(void) {
                 carType = 3;
             }
             ui_CarPicked(210, 76, carType, &carRight[0]);
+        } else if (kb_IsDown(kb_KeyEnter) && cursorX == 65) {
+            ui_HelpMenu();
+            ui_MainMenu(day);
+            ui_CarPicked(210, 76, carType, carRight);
+            ui_Cursor(0, cursorX, cursorY);
         }
         if (kb_Data[7] && (!keyPressed || timer_Get(1) > 3000)) {
             ui_Cursor(17, cursorX, cursorY);
@@ -129,6 +134,10 @@ int main(void) {
                 cursorX += 57;
             } else if (kb_IsDown(kb_KeyLeft) && cursorX > 20 && cursorY != 75) {
                 cursorX -= 57;
+            } else if (kb_IsDown(kb_KeyRight) && cursorX == 65 && cursorY == 75) {
+                cursorX = 107;
+            } else if (kb_IsDown(kb_KeyLeft) && cursorX == 107 && cursorY == 75) {
+                cursorX = 65;
             }
             ui_Cursor(0, cursorX, cursorY);
             if (!keyPressed) {
