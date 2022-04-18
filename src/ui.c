@@ -64,30 +64,29 @@ void ui_MainMenu(uint8_t day) {
 }
 
 void ui_HelpMenu(void) {
-    ui_ScreenWipe(17);
+    gfx_FillScreen(17);
     gfx_SetTextScale(3, 3);
     gfx_PrintStringXY("Help", 112, 20);
     gfx_SetColor(0);
     gfx_FillRectangle_NoClip(20, 50, 280, 3);
     gfx_SetTextScale(1, 1);
-    gfx_PrintStringXY("Use the arrow keys to move the car", 30, 60);
-    gfx_PrintStringXY("around the screen, keeping it from", 30, 70);
-    gfx_PrintStringXY("overheating.", 30, 80);
-    gfx_PrintStringXY("There are diferent types of weather.", 30, 96);
-    gfx_PrintStringXY("In rainy weather, avoid the shade,", 30, 106);
-    gfx_PrintStringXY("because of acid rain. Instead, go in", 30, 116);
-    gfx_PrintStringXY("the pond. In snowy weather, driving on", 30, 126);
-    gfx_PrintStringXY("the frozen pond will cause you to lose", 30, 136);
-    gfx_PrintStringXY("control of your vehicle.", 30, 146);
-    gfx_PrintStringXY("Try to survive for 256 in-game days", 30, 162);
-    gfx_PrintStringXY("in order to win!", 30, 172);
-    gfx_PrintStringXY("Have fun!", 30, 188);
+    gfx_PrintStringXY("Use the arrow keys to move the car", 30, 62);
+    gfx_PrintStringXY("around the screen, keeping it from", 30, 72);
+    gfx_PrintStringXY("overheating.", 30, 82);
+    gfx_PrintStringXY("There are diferent types of weather.", 30, 100);
+    gfx_PrintStringXY("In rainy weather, avoid the shade,", 30, 110);
+    gfx_PrintStringXY("because of acid rain. Instead, go in", 30, 120);
+    gfx_PrintStringXY("the pond. In snowy weather, driving on", 30, 130);
+    gfx_PrintStringXY("the frozen pond will cause you to lose", 30, 140);
+    gfx_PrintStringXY("control of your vehicle.", 30, 150);
+    gfx_PrintStringXY("Try to survive for 256 in-game days", 30, 166);
+    gfx_PrintStringXY("in order to win!", 30, 176);
+    gfx_PrintStringXY("Have fun!", 30, 194);
 
     while(!kb_IsDown(kb_KeyClear)) {
         kb_Scan();
     }
     while(kb_AnyKey());
-    ui_ScreenWipe(17);
 }
 
 void ui_ScreenWipe(uint8_t color) {
