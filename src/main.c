@@ -97,7 +97,7 @@ int main(void) {
 
     // Main menu
 
-    while (!(kb_IsDown(kb_KeyEnter) && cursorY == 75 && cursorY == 107) && !kb_IsDown(kb_KeyClear)) {
+    while (!(kb_IsDown(kb_KeyEnter) && cursorY == 75 && cursorX == 107) && !kb_IsDown(kb_KeyClear)) {
         kb_Scan();
         if (!kb_AnyKey()) {
             keyPressed = false;
