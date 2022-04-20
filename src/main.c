@@ -181,8 +181,8 @@ int main(void) {
         int time = 0;
         int finish = 150;
         uint8_t weather = randInt(0, 2);    // Normal, snow, rain
-        int roadItemX[3] = {randInt(24, 178), randInt(29, 96), randInt(125, 170)};
-        uint8_t roadItemY[3] = {randInt(23, 64), randInt(97, 181), randInt(102, 156)};
+        int roadItemX[3] = {randInt(24, 178), randInt(29, 96), 125};
+        uint8_t roadItemY[3] = {randInt(23, 64), randInt(97, 181), 102};
 
         gfx_SetDrawBuffer();
         ui_BackgroundFrame(day);

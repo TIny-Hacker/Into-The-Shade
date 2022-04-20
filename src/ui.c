@@ -72,7 +72,7 @@ void ui_HelpMenu(void) {
     gfx_SetTextScale(1, 1);
     gfx_PrintStringXY("Use the arrow keys to move the car", 30, 62);
     gfx_PrintStringXY("around the screen, keeping it from", 30, 72);
-    gfx_PrintStringXY("overheating.", 30, 82);
+    gfx_PrintStringXY("overheating by going in the shade.", 30, 82);
     gfx_PrintStringXY("There are diferent types of weather.", 30, 100);
     gfx_PrintStringXY("In rainy weather, avoid the shade,", 30, 110);
     gfx_PrintStringXY("because of acid rain. Instead, go in", 30, 120);
@@ -81,7 +81,8 @@ void ui_HelpMenu(void) {
     gfx_PrintStringXY("control of your vehicle.", 30, 150);
     gfx_PrintStringXY("Try to survive for 256 in-game days", 30, 166);
     gfx_PrintStringXY("in order to win!", 30, 176);
-    gfx_PrintStringXY("Have fun!", 30, 194);
+    gfx_PrintStringXY("Cemetech thread: www.ceme.tech/t18578", 30, 192);
+    gfx_PrintStringXY("Have fun!", 30, 210);
 
     while(!kb_IsDown(kb_KeyClear)) {
         kb_Scan();
