@@ -173,8 +173,7 @@ void ui_StageComplete(uint8_t day, uint8_t carType, gfx_sprite_t **carRight) {
 
     gfx_SetTextFGColor(0);
     gfx_SetTextScale(3, 3);
-    gfx_PrintStringXY("Day", 108, 75);
-    gfx_SetTextXY(189, 75);
+    gfx_PrintStringXY("Day ", 108, 75);
     gfx_PrintInt(day + 1, 1);
     gfx_PrintStringXY("Complete!", 58, 100);
     gfx_SetTextScale(1, 1);
