@@ -84,7 +84,7 @@ int main(void) {
     ui_CarPicked(210, 76, carType, carRight);   // Whenever I pass an array of sprites, the compiler has a hiccup unless I put a [0] after it. Not sure why but it works!
     gfx_BlitBuffer();
 
-    uint16_t cursorX = 107;
+    int cursorX = 107;
     uint8_t cursorY = 75;
 
     gfx_SetDrawScreen();

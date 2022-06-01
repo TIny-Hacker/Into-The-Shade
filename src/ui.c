@@ -97,7 +97,7 @@ void ui_ScreenWipe(uint8_t color) {
     }
 }
 
-void ui_CarPicked(uint16_t x, uint8_t y, uint8_t carType, gfx_sprite_t **carRight) {
+void ui_CarPicked(int x, uint8_t y, uint8_t carType, gfx_sprite_t **carRight) {
     gfx_SetColor(2);
     gfx_Rectangle_NoClip(x, y, 32, 32);
     gfx_SetColor(0);
@@ -107,7 +107,7 @@ void ui_CarPicked(uint16_t x, uint8_t y, uint8_t carType, gfx_sprite_t **carRigh
     gfx_TransparentSprite_NoClip(carRight[carType], x + 8, y + 8);
 }
 
-void ui_Cursor(uint16_t color, uint16_t cursorX, uint8_t cursorY) {
+void ui_Cursor(int color, int cursorX, uint8_t cursorY) {
     gfx_SetColor(color);
     if (cursorY == 75 && cursorX == 107) {
         gfx_Rectangle_NoClip(cursorX, cursorY, 94, 34);
