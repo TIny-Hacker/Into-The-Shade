@@ -167,7 +167,7 @@ void ui_GameOver(void) {
 
 void ui_StageComplete(uint8_t day, uint8_t carType, gfx_sprite_t **carRight) {
     ui_ScreenWipe(17);
-    int16_t carAnimation = 0;
+    int carAnimation = 0;
     gfx_SetDrawBuffer();
     gfx_FillScreen(17);
 
