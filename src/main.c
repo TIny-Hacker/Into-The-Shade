@@ -13,7 +13,7 @@
 #define THIRD_SECOND (TIMER_FREQ / 3)
 #define QRTR_SECOND (TIMER_FREQ / 4)
 
-void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, int *roadItemX, uint8_t *roadItemY, uint8_t direction, uint8_t carType, uint8_t heat, uint8_t weather, int time, gfx_sprite_t **carRight, gfx_sprite_t **carLeft, gfx_sprite_t **carUp, gfx_sprite_t **carDown) {
+static void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, int *roadItemX, uint8_t *roadItemY, uint8_t direction, uint8_t carType, uint8_t heat, uint8_t weather, int time, gfx_sprite_t **carRight, gfx_sprite_t **carLeft, gfx_sprite_t **carUp, gfx_sprite_t **carDown) {
     gfx_sprite_t *roadStuff[3] = {roadCrack, snow, rain};
     gfx_sprite_t *weatherIndicator[3] = {sunIndicator, snowIndicator, rainIndicator};
     gfx_sprite_t *pond[2] = {meltedPond, frozenPond};
@@ -32,16 +32,16 @@ void draw(int shadeX, uint8_t shadeY, int carX, uint8_t carY, int *roadItemX, ui
     
     switch (direction) {
         case 0:
-                gfx_ScaledTransparentSprite_NoClip(carRight[carType], carX, carY, 3, 3);
+            gfx_ScaledTransparentSprite_NoClip(carRight[carType], carX, carY, 3, 3);
             break;
         case 1:
-                gfx_ScaledTransparentSprite_NoClip(carLeft[carType], carX, carY, 3, 3);
+            gfx_ScaledTransparentSprite_NoClip(carLeft[carType], carX, carY, 3, 3);
             break;
         case 2:
-                gfx_ScaledTransparentSprite_NoClip(carDown[carType], carX, carY, 3, 3);
+            gfx_ScaledTransparentSprite_NoClip(carDown[carType], carX, carY, 3, 3);
             break;
         case 3:
-                gfx_ScaledTransparentSprite_NoClip(carUp[carType], carX, carY, 3, 3);
+            gfx_ScaledTransparentSprite_NoClip(carUp[carType], carX, carY, 3, 3);
             break;
         default:
             break;
